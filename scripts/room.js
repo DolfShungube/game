@@ -5,6 +5,9 @@ import * as THREE from "three";
 
 export class Room extends THREE.Group{
 
+
+  
+
     constructor(size={width:80,height:50}){
         super();
         this.size=size;
@@ -16,7 +19,6 @@ export class Room extends THREE.Group{
         this.generateBaseRoom();
 
     }
-  
 
 
     generateBaseRoom(){
@@ -88,7 +90,8 @@ export class Room extends THREE.Group{
     }
   }
   
-  addItem(mesh){  // we use this to add additional objects to a room
+  addItem(mesh){
+    // we use this to add additional objects to a room
     this.add(mesh);
   }  
 
