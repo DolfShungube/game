@@ -8,6 +8,23 @@
   </head>
   <body>
     <div id="app"></div>
+
+    <div id="interaction-prompt" style="
+        position: absolute; 
+        top: 70%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        background-color: rgba(0, 0, 0, 0.7); 
+        color: white; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        font-size: 1.2em;
+        /* Set initial state to hidden, which is critical */
+        display: none; 
+        z-index: 999;
+    ">
+        PRESS E TO INTERACT
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
