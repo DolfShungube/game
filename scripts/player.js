@@ -17,7 +17,7 @@ export class Player{
   vy=0;
   onGround = false;
 
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight);
+  camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight,0.01,1000);
   controls = new PointerLockControls(this.camera, document.body);
 
   constructor(scene,collidables=[]) {
