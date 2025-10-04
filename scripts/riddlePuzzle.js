@@ -103,8 +103,8 @@ export class RiddlePuzzle extends THREE.Group{
         const paperMat = new THREE.MeshBasicMaterial({ 
         map: paperTexture,
         color: 0xffffff,
-        specular: 0x111111,
-        shininess: 30,
+        //specular: 0x111111,
+        //shininess: 30,
         side: THREE.DoubleSide,
         // Z-FIGHTING FIX: ensures it renders on top of the table
         polygonOffset: true,
@@ -116,6 +116,8 @@ export class RiddlePuzzle extends THREE.Group{
         this.paperMesh = new THREE.Mesh(paperGeo, paperMat);
         this.paperMesh.name = 'RiddlePaper'; // Useful for later interaction/collection
         this.paperMesh.visible = false;  
+        //this.scene.add(this.paperMesh);
+        this.add(this.paperMesh); 
         
     }
 
@@ -153,7 +155,8 @@ export class RiddlePuzzle extends THREE.Group{
             // TODO: GAME STATE CHANGE LOGIC GOES HERE ***
              if (!this.paperDropped) {
                 this.getDroppedPaper();
-                this.add(this.paperMesh); // Sets its position and sets this.paperDropped = true
+                //this.deactivate(); 
+                //this.add(this.paperMesh); // Sets its position and sets this.paperDropped = true
 
                    // === NEW: LOG WORLD POSITION AFTER ADDING TO PARENT ===
                 const worldPos = new THREE.Vector3();
@@ -162,10 +165,8 @@ export class RiddlePuzzle extends THREE.Group{
                 // Expected output (approx): [0, 3.03, 0]
                 
             }
-            setTimeout(() => {
-                this.deactivate(); // Call deactivate to hide the UI and re-enable controls
-            }, 1000);
-
+          
+            this.deactivate()
             console.log("Riddle Solved!");
             return true;  
         }else{
@@ -193,12 +194,14 @@ export class RiddlePuzzle extends THREE.Group{
     activate(){
         if(!this.isSolved){
             this.ui.show();
+            isUIVisible=true;
             // TODO: Temporarily disable player movement/camera controls here
         }
     }
 
     deactivate(){
         this.ui.hide();
+        isUIVisible=false;
         // TODO: Re-enable player movement/camera controls here
     }
 
