@@ -11,9 +11,9 @@ focusTarget = null;   // the interactable object we’re focused on
 originalCameraPos = null; // store camera before zoom
 originalControlsEnabled = true; // track controls state
 focusSpeed = 5; // how fast the camera moves to the object
-  maxSpeed =20;
+  maxSpeed =30;
   height =6;
-  radius =0.5;
+  radius =1.5;
   highlighted = null;
 outlineMesh = null;
 raycaster = new THREE.Raycaster();
@@ -32,7 +32,7 @@ raycaster = new THREE.Raycaster();
   constructor(scene,collidables=[]) {
     this.collidables=collidables;
     this.Setcontrols={forward:"KeyW",backward:"KeyZ",right:"KeyD",left:"KeyA",jump:"Space"}
-    this.interactionInput={forward:"false",backward:"false",right:"false",left:"false",action:"false",cancel:"false"}
+    this.interactionInput={forward:"KeyW",backward:"KeyZ",right:"KeyD",left:"KeyA",jump:"Space"}
     this.camera.position.set(0, this.height * 0.9, 0);
     scene.add(this.camera);
 
@@ -177,21 +177,44 @@ checkGround(){
     return this.camera.position;
   }
 
-checkLookingAt(){
+
+
+highlightObject(obj) {
+  if (this.highlighted === obj) return; // already highlighted
+
+  // remove old highlight
+  if (this.outlineMesh) {
+    this.outlineMesh.parent.remove(this.outlineMesh);
+    this.outlineMesh = null;
+  }
+
+  if (!obj) {
+    this.highlighted = null;
+    return;
+  }
+
+  // create outline clone
+  const outlineMaterial = new THREE.MeshBasicMaterial({
+    color: "blue",
+    side: THREE.BackSide
+  });
+
+  this.outlineMesh = obj.mesh.clone();
+  this.outlineMesh.material = outlineMaterial;
+  this.outlineMesh.scale.multiplyScalar(1.05); // slightly bigger
+  obj.mesh.add(this.outlineMesh);
+
+  this.highlighted = obj;
+}
+
+
+checkLookingAt() {
   const dir = new THREE.Vector3();
   this.camera.getWorldDirection(dir);
 
   this.raycaster.set(this.camera.position, dir);
-  
+  const intersects = this.raycaster.intersectObjects(this.collidables.map(c => c.mesh), true);
 
-    const validMeshes = this.collidables.filter(c => c && c.mesh).map(c => c.mesh);
-
-  if (validMeshes.length === 0) {
-    this.highlighted = null;
-    return null;
-  }
-
-    const intersects = this.raycaster.intersectObjects(validMeshes, true);
   if (intersects.length > 0) {
 
     // Find the top-level collidable containing the intersected mesh
@@ -199,14 +222,12 @@ checkLookingAt(){
         
     if (obj && obj.type === "interactable"){
      
-     this.highlighted = obj;
+      this.highlightObject(obj);
       return obj;
     }
-
-    
   }
 
-  this.highlighted =null;
+  this.highlightObject(null);
   return null;
 }
 
@@ -214,14 +235,7 @@ checkLookingAt(){
 toggleFocus() {
   if (!this.isFocusing) {
     if (!this.highlighted) return;
-    
-    // Safety check: ensure highlighted object has a valid mesh
-    if (!this.highlighted.mesh) {
-      console.error('Highlighted object missing mesh property:', this.highlighted);
-      return;
-    }
 
-    // Do a raycast to get the exact hit point and face normal
     const dir = new THREE.Vector3();
     this.camera.getWorldDirection(dir);
     this.raycaster.set(this.camera.position, dir);
@@ -240,40 +254,7 @@ toggleFocus() {
       this.focusTarget.onFocus(this);
     }
 
-    // Get the hit point and face normal
-    const hitPoint = intersects[0].point;
-    const faceNormal = intersects[0].face ? intersects[0].face.normal.clone() : dir.clone().negate();
-    
-    // Transform normal to world space
-    const worldNormal = faceNormal.clone().transformDirection(intersects[0].object.matrixWorld);
-
-    // Get object bounds for sizing
-    const box = new THREE.Box3().setFromObject(this.focusTarget.mesh);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-
-    // Calculate optimal distance based on object size
-    const fov = this.camera.fov * (Math.PI / 180);
-    const aspect = this.camera.aspect;
-    
-    // Use the face dimensions for better framing
-    const objectSize = Math.max(size.x, size.y, size.z);
-    const distanceY = (objectSize * 0.8) / Math.tan(fov / 2);
-    const distanceX = (objectSize * 0.8) / (Math.tan(fov / 2) * aspect);
-    
-    const baseDistance = Math.max(distanceX, distanceY);
-    const safeDistance = Math.max(baseDistance, 0.2);
-
-    // Focus point is the hit point on the face
-    this.focusCenter = hitPoint.clone();
-    
-    // Position camera perpendicular to the face
-    this.targetPos = hitPoint.clone().add(worldNormal.multiplyScalar(safeDistance));
-    
-    // Look directly at the hit point
-    this.targetQuat = new THREE.Quaternion().setFromRotationMatrix(
-      new THREE.Matrix4().lookAt(this.targetPos, this.focusCenter, new THREE.Vector3(0, 1, 0))
-    );
+    // ... rest of focus setup code ...
 
   } else {
     // Call onUnfocus callback if it exists
@@ -314,7 +295,6 @@ updateFocus(dt) {
     
     // Call the object's interaction handler
     if (this.focusTarget && this.focusTarget.onInteract) {
-    
       this.focusTarget.onInteract(dt, this, this.interactionInput);
     }
     
@@ -350,7 +330,7 @@ onKeyDown(event) {
       case "KeyE":
         this.interactionInput.action = true;
         break;
-      case "Space":
+      case "Escape":
         this.interactionInput.cancel = true;
         this.toggleFocus(); // Exit focus mode
         break;

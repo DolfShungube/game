@@ -33,7 +33,7 @@ export class worldBuilder extends THREE.Group{
         }
 
 
-    startAnimation(player){
+    startAnimation(player,LevelLogic = null){
         let prevTime = performance.now();
 
         const animate = () => {
@@ -41,6 +41,13 @@ export class worldBuilder extends THREE.Group{
             const dt = (currTime - prevTime) / 1000;
 
             player.applyInputs(dt);
+            player.checkLookingAt();
+            player.updateFocus(dt);
+
+            if (LevelLogic && typeof LevelLogic === 'function') {
+            LevelLogic();
+            }
+
             this.renderer.render(this.scene, player.camera);
 
             prevTime = currTime;
