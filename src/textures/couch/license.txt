@@ -1,0 +1,11 @@
+Model Information:
+* title:	Couch
+* source:	https://sketchfab.com/3d-models/couch-20865e74c69a4a77b0fa81bc8d852906
+* author:	victorberdugo1 (https://sketchfab.com/victorberdugo1)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Couch" (https://sketchfab.com/3d-models/couch-20865e74c69a4a77b0fa81bc8d852906) by victorberdugo1 (https://sketchfab.com/victorberdugo1) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
