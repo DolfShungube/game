@@ -1,193 +1,225 @@
-import * as THREE from 'three';
+
 import { Room } from './room';
 import { worldBuilder } from './renderCommons';
 import { Player } from './player';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { ClockPuzzle } from './clockPuzzle';
-import { RiddlePuzzle } from './riddlePuzzle';
+import { DrawerPuzzle } from './drawerPuzzle';
+import {ButtonPuzzle } from './buttonPuzzle';
+import { CombinationLockPuzzle } from './combinationLockPuzzle';
 
 
 // stuff inside the level1_World function is just for testing, not final: DOLF
 
-let gameLevelComplete=false;  // level completed or not
-let gameItems=[];  // keeps track of items player has collected
-let gameTimer=0;  // game time we agreed on
-
-
-//creating the table in the room ,will move if needed
-
-function createTable(){
-  //1 . defining the materials
-  const woodMaterial = new THREE.MeshPhongMaterial({
-     color: 0x8B4513 ,
-     specular: 0x111111,
-      shininess: 50 
-    });
-
-    //2 group container for the table so I can move it around and add legs and top to it
-    const tableGroup  = new THREE.Group();
-
-    //Dimensions: Tabletop (2m x 0.1m x 1m), Legs (0.1m x 0.9m x 0.1m)
-    const tableHeight = 3.0; 
-    const tabletopThickness = 0.1;
-    const NEW_LEG_HEIGHT = tableHeight - tabletopThickness;
-    const legHeight = 0.9;
-    const legWidth = 0.1
-
-    // NEW TABLETOP DIMENSIONS
-    const tabletopWidth = 8;
-    const tabletopDepth = 4;
-
-    //3. creating the tabletop
-    const tabletopGeometry = new THREE.BoxGeometry(tabletopWidth,tabletopThickness, tabletopDepth);
-    const tabletop = new THREE.Mesh(tabletopGeometry, woodMaterial);
-
-    //4.Positioning the table top so its on top of the legs
-    tabletop.position.y = tableHeight - (tabletopThickness / 2); 
-    tableGroup.add(tabletop);
-
-    // 5.Creating the four legs
-    const legGeometry = new THREE.BoxGeometry(legWidth, NEW_LEG_HEIGHT, legWidth);
-    const legOffsetY = NEW_LEG_HEIGHT  / 2;
-    const legOffsetX = (tabletopWidth / 2) - (legWidth * 2); // (8 / 2) - 0.2 = 3.8
-    const legOffsetZ = (tabletopDepth / 2) - (legWidth * 2); // (4 / 2) - 0.2 = 1.8
-
-    const legPositions = [
-      [ legOffsetX, legOffsetY,  legOffsetZ], // Front-Right
-      [-legOffsetX, legOffsetY,  legOffsetZ], // Front-Left
-      [ legOffsetX, legOffsetY, -legOffsetZ], // Back-Right
-      [-legOffsetX, legOffsetY, -legOffsetZ]  // Back-Left
-    ];
-
-     legPositions.forEach(pos => {
-        const leg = new THREE.Mesh(legGeometry, woodMaterial);
-        leg.position.set(pos[0], pos[1], pos[2]);
-        tableGroup.add(leg);
-    });
-
-    //this adds the shadow to the table so we can uncomment it later for better visual
-    //tableGroup.children.forEach(mesh => {
-        //mesh.castShadow = true;
-        //mesh.receiveShadow = true;
-    //});
-
-    return tableGroup;
-
-}
-
-
-/*function createDebugPaper() {
-    // 1. Geometry: Standard visible size.
-    const paperGeo = new THREE.PlaneGeometry(1.0, 1.0); 
-    
-    // 2. Material: SWITCHED TO PHONG MATERIAL and light color for proper lighting response
-    const paperMat = new THREE.MeshBasicMaterial({ 
-        color: 0xff0000,
-      specular: 0x111111,
-      shininess: 50,
-      side: THREE.DoubleSide,
-      polygonOffset: true,
-      polygonOffsetFactor: -2,
-      polygonOffsetUnits: -4,
-    }); 
-
-
-    
-    const debugPaper = new THREE.Mesh(paperGeo, paperMat);
-    debugPaper.position.set(0, 4, 0);
-   debugPaper.material.color.set(0xff0000); // Bright red for testing
-    debugPaper.scale.set(2, 2, 1); 
-
-    
-    // *** CRITICAL FIX: Ensure the paper renders on top of the table ***
-    //debugPaper.renderOrder = 10;
-    
-    // 3. Position Calculation (Local to the Table Group):
-    
-    const LOCAL_TABLETOP_Y = 2.95; 
-    // Y: Paper rests 0.01m above the tabletop 
-    const LOCAL_Y = LOCAL_TABLETOP_Y + 0.01; 
-       
-    // X/Z: Dead center
-    const LOCAL_X = 0.0; 
-    const LOCAL_Z = 0.0; 
-
-    debugPaper.position.set(LOCAL_X, 3.03, LOCAL_Z);
-    
-    // Lie flat on the table 
-    debugPaper.rotation.x = -Math.PI / 2; 
-    
-    console.log("Debug Paper Local Position (to table):", debugPaper.position.toArray());
-    
-    return debugPaper;
-}*/
+let gameLevelComplete=false;  // level completed or not
+let gameItems=[];  // keeps track of items player has collected
+let gameTimer=0;  // game time we agreed on
 
 
 export function level1_World(){
 
-// --- This is for the riddle Machine (Anyone who has a great riddle can chnage this one below and provide the answers also)---
-const riddle = "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?";
-const answer = "map";
-const riddleMachine = new RiddlePuzzle(riddle, answer);
-// Riddle Machine is at X = -37.0 (LEFT side of the table)
-riddleMachine.position.set(-37.0, 3.2, -36.0); 
-
 const world= new worldBuilder();
 const room= new Room();
-const clockPuzzle= new ClockPuzzle(5);
-clockPuzzle.createBaseClock();
-const table=createTable();
-// Table is at X = -34.0
-table.position.set(-34.0, 0, -36.0);
-
-  //const debugPaper = createDebugPaper();
-
-
-//debugPaper.material.depthTest = false;  // Force render on top of everything
-//debugPaper.material.color.set(0xff0000); // Make it bright red for visibility test
-//debugPaper.scale.set(5, 5, 1); // Make it larger to verify it's really there
-//wconsole.log("World Position:", debugPaper.getWorldPosition(new THREE.Vector3()));
-
-
-const collidables =[  // list of items the player is able to collide with, (everthing should be type wall)
-
-  { mesh: room.floor, type: 'floor' },
-  { mesh: room.ceiling, type: 'ceiling'},
-  {mesh:clockPuzzle,type:'wall'},
-  { mesh: table, type: 'wall'}, 
-  { mesh: riddleMachine, type: 'wall'}, 
-  ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
-];
-
-
-
 
 const renderer = world.ititialiseRenderer();
 const scene= world.initializeScene();
+const clockPuzzle= new ClockPuzzle();
+const drawerPuzzle= new DrawerPuzzle();
+const buttonPuzzle= new ButtonPuzzle();
+const clock=clockPuzzle.createBaseClock();
+
+const Basedrawer= drawerPuzzle.createBaseDrawer();
+const combinationLockPuzzle= new CombinationLockPuzzle()
+//const button= buttonPuzzle.createBaseButton();
+const drawer1= Basedrawer.drawer1;
+ const drawer2= Basedrawer.drawer2;
+const drawer= Basedrawer.container;
+const lock1= Basedrawer.lock1;
+const lock2= Basedrawer.lock2;
+const lock3= Basedrawer.lock3;
+const lock4= Basedrawer.lock4;
+const button1=Basedrawer.button1;
+const button2= Basedrawer.button2;
+const button3= buttonPuzzle.createBaseButton();
+const button4= buttonPuzzle.createBaseButton();
+
+
+const combinationLock1= combinationLockPuzzle.createBaseCombinationLock();
+const combinationLock2= combinationLockPuzzle.createBaseCombinationLock();
+const combinationLock3= combinationLockPuzzle.createBaseCombinationLock();
+const combinationLock4= combinationLockPuzzle.createBaseCombinationLock();
+
+
+
+
+// const lock1Control=drawerPuzzle.createBaseLock().lockControls;
+// const lock1Machanism=lock1Control.lockMechanism;
+
+
+
+
+
+
 world.addBaseLighting()
 
+const collidables =[
+  // list of items the player is able to collide with, (everthing should be type wall)
+
+  { mesh: room.floor, type: 'floor'},
+  { mesh: room.ceiling, type: 'ceiling'},
+  clock,
+  drawer,
+  lock1,lock2,lock3,lock4,
+  drawer1,drawer2,
+  button1,button2,button3,button4,
+  combinationLock1,combinationLock2,combinationLock3,combinationLock4,
+  
+  ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
+];
 
 room.generateBaseRoom();
-clockPuzzle.createBaseClock();
-clockPuzzle.position.set(0, 25,-38);
-clockPuzzle.updateClockhands(245*Math.PI/360,0.5);
-room.addItem(clockPuzzle);
-room.addItem(table);
-room.addItem(riddleMachine);
-//table.add(debugPaper);
+clock.mesh.scale.set(3,3,3)
+clock.mesh.position.set(0, 20,-38);
+drawer.mesh.position.set(-10,2,-30);
+
+
+lock1.mesh.scale.set(0.3,0.3,0.3)
+lock1.mesh.position.set(-7.9,2,-30.0);
+lock1.mesh.rotation.y=Math.PI/2
+
+lock2.mesh.scale.set(0.3,0.3,0.3)
+lock2.mesh.rotation.y=Math.PI/2
+lock2.mesh.position.set(-38.5,5,10);
+
+
+
+lock3.mesh.scale.set(0.3,0.3,0.3)
+lock3.mesh.rotation.y=3*Math.PI/2
+lock3.mesh.position.set(38.5,5,-10);
+
+lock4.mesh.scale.set(0.3,0.3,0.3)
+lock4.mesh.rotation.y=Math.PI
+lock4.mesh.position.set(10,5,32);
+
+button3.mesh.position.set(-2,3,0)
+button3.mesh.scale.set(0.5,0.5,0.5)
+
+button4.mesh.position.set(2,3,0)
+button4.mesh.scale.set(0.5,0.5,0.5)
+
+
+combinationLock1.mesh.rotation.z = Math.PI / 2;
+combinationLock1.mesh.position.set(-0.5,3,-39.6)
+
+combinationLock2.mesh.rotation.z = Math.PI / 2;
+combinationLock2.mesh.position.set(0.5,3,-39.6)
+
+combinationLock3.mesh.rotation.z = Math.PI / 2;
+combinationLock3.mesh.position.set(1.5,3,-39.6)
+
+combinationLock4.mesh.rotation.z = Math.PI / 2;
+combinationLock4.mesh.position.set(2.5,3,-39.6)
+
+
+room.addItem(clock.mesh)
+room.add(drawer.mesh)
+room.add(lock1.mesh)
+room.add(lock2.mesh)
+room.add(lock3.mesh)
+room.add(lock4.mesh)
+
+room.add(combinationLock1.mesh)
+room.add(combinationLock2.mesh)
+room.add(combinationLock3.mesh)
+room.add(combinationLock4.mesh)
+
+room.add(button3.mesh)
+room.add(button4.mesh)
+
 scene.add(room)
 
-// *** Correct Attachment to the table group ***
-
-
-
-
 const player = new Player(scene,collidables);
+const controls= new OrbitControls(player.camera,renderer.domElement)
 
-// Set camera to look at the center of the table/paper
+let buttonList=[button1,button2,button3,button4]
+let combinationList=[combinationLock1,combinationLock2,combinationLock3,combinationLock4]
+let combinationValues=[1,2,3,4]
+
+setConbinationValues(combinationList,combinationValues)
+
+
+function customGameLogic(){
+
+  linkDrawerToClock(clock,drawer2)
+  linkButtonsToCombinationLock(buttonList,combinationList)
+  allCombinationsSolved(combinationList)
+
+}
 
 
 
-world.startAnimation(player,riddleMachine);
+
+function linkDrawerToClock(clock,drawer){
+
+      if(clock.solved){
+        drawer.solved=true;
+
+      }else{
+        drawer.solved=false;
+      }
+}
+
+function linkButtonsToCombinationLock(buttonList,combinationList){
+
+    for(let i=0;i<buttonList.length;i++){
+
+      if(buttonList[i].solved){
+        combinationList[i].unlocked=true;
+      }else{
+        combinationList[i].unlocked=false;
+      }
+
+
+    }
+}
+
+function allCombinationsSolved(combinationList){
+
+  let allSolved=true
+
+  for(let i=0;i<combinationList.length;i++){
+
+      if(!combinationList[i].solved){
+        allSolved=false
+        break;
+
+      }
+  }
+
+  if(allSolved){
+    gameLevelComplete=true;
+  }
+}
+
+
+function setConbinationValues(combinationList,values){
+
+    for (let i=0; i<combinationList.length;i++){
+      combinationList[i].solutionNumber= values[i]
+    }
+
+
+}
+
+
+
+
+
+
+ world.startAnimation(player,customGameLogic);
+
+
+
+
 
 }
