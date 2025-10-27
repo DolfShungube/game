@@ -153,9 +153,8 @@ function createCouch() {
 function createCarpet() {
     const textureLoader = new THREE.TextureLoader();
     
-    // Carpet dimensions (adjust as needed)
-    const carpetWidth = 60;
-    const carpetDepth = 60;
+    const carpetWidth = 15;
+    const carpetDepth = 15;
     const carpetGeometry = new THREE.PlaneGeometry(carpetWidth, carpetDepth);
     
     // Load all PBR textures for realistic rendering
@@ -193,7 +192,7 @@ function createCarpet() {
     carpet.rotation.x = -Math.PI / 2;
     carpet.position.y = 0.01;
     carpet.position.x = 0; // Center of room
-    carpet.position.z = 0; // Center of room
+    carpet.position.z = 10; // Center of room
     
     carpet.receiveShadow = true;
     
@@ -733,74 +732,98 @@ function loadWallTexture(room, texturePath, wallSide = 'all') {
     );
 }
 
-export function level1_World(){
+export function level1_World() {
+    // --- This is for the riddle Machine ---
+    const riddle = "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?";
+    const answer = "map";
+    const riddleMachine = new RiddlePuzzle(riddle, answer);
+    // Riddle Machine is at X = -37.0 (LEFT side of the table)
+    riddleMachine.position.set(-27.5, 3.2, -27.0); 
 
-// --- This is for the riddle Machine (Anyone who has a great riddle can chnage this one below and provide the answers also)---
-const riddle = "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?";
-const answer = "map";
-const riddleMachine = new RiddlePuzzle(riddle, answer);
-// Riddle Machine is at X = -37.0 (LEFT side of the table)
-riddleMachine.position.set(-27.5, 3.2, -27.0); 
+    const world = new worldBuilder();
+    
+    // Create room with furniture options
+    const room = new Room(
+        { width: 60, height: 20 },
+        {
+            furniture: {
+                bookshelf: {
+                    enabled: true,
+                    position: { x: 0, y: 0, z: 13 },
+                    scale: 0.7,
+                    modelUrl: './models/bookshelf.glb'
+                },
+                coffeeTable: {
+                    enabled: true, 
+                    position: { x: 0, y: 2.0, z: 10 },
+                    scale: 1.0,
+                    modelUrl: './models/coffee_table.glb'
+                },
+            }
+        }
+    );
 
-const world= new worldBuilder();
-const room= new Room();
-const clockPuzzle= new ClockPuzzle(5);
-clockPuzzle.createBaseClock();
-const table=createTable();
-// Table is at X = -34.0
-table.position.set(-25.0, 0, -27.0);
+    const clockPuzzle = new ClockPuzzle(5);
+    clockPuzzle.createBaseClock();
+    const table = createTable();
+    // Table is at X = -34.0
+    table.position.set(-25.0, 0, -27.0);
 
-const carpet = createCarpet();
 
-const fireplace = createFireplace();
-// Position fireplace against a wall (e.g., north wall at z = -30)
-fireplace.position.set(27, 0, 3);
-// rotating the fireplace
-fireplace.rotation.y = -Math.PI / 2;   // 90° - faces EAST (right wall)
+    const fireplace = createFireplace();
+    // Position fireplace against a wall (e.g., north wall at z = -30)
+    fireplace.position.set(27, 0, 3);
+    // rotating the fireplace
+    fireplace.rotation.y = -Math.PI / 2;   // 90° - faces EAST (right wall)
 
-// Create two couches
-const couch1 = createCouch();
-couch1.position.set(-10, 0, 10); // Left side of room
-couch1.rotation.y = Math.PI / 2; // Face toward center
+    // Create two couches
+    const couch1 = createCouch();
+    couch1.position.set(-10, 0, 10); // Left side of room
+    couch1.rotation.y = Math.PI / 2; // Face toward center
 
-const couch2 = createCouch();
-couch2.position.set(10, 0, 10); // Right side of room
-couch2.rotation.y = -Math.PI / 2; // Face toward center
+    const couch2 = createCouch();
+    couch2.position.set(10, 0, 10); // Right side of room
+    couch2.rotation.y = -Math.PI / 2; // Face toward center
 
-const collidables =[  // list of items the player is able to collide with, (everthing should be type wall)
-  { mesh: room.floor, type: 'floor' },
-  { mesh: room.ceiling, type: 'ceiling'},
-  {mesh:clockPuzzle,type:'wall'},
-  { mesh: table, type: 'wall'}, 
-  { mesh: riddleMachine, type: 'wall'}, 
-  { mesh: couch1, type: 'wall'},
-  { mesh: couch2, type: 'wall'},
-  ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
-];
+    const collidables = [  // list of items the player is able to collide with
+        { mesh: room.floor, type: 'floor' },
+        { mesh: room.ceiling, type: 'ceiling'},
+        { mesh: clockPuzzle, type: 'wall' },
+        { mesh: table, type: 'wall'}, 
+        { mesh: riddleMachine, type: 'wall'}, 
+        { mesh: couch1, type: 'wall'},
+        { mesh: couch2, type: 'wall'},
+        // Add furniture to collidables
+        ...(room.furniture.bookshelf ? [{ mesh: room.furniture.bookshelf, type: 'furniture' }] : []),
+        ...(room.furniture.coffeeTable ? [{ mesh: room.furniture.coffeeTable, type: 'furniture' }] : []),
+        ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
+    ];
 
-const renderer = world.ititialiseRenderer();
-const scene= world.initializeScene();
-world.addBaseLighting()
+    const carpet = createCarpet();
 
-room.generateBaseRoom();
-// ENHANCED: Realistic Wooden Floor with PBR material
-loadFloorTexture(room, './src/textures/floor_level1_(1).jpg');
-loadWallTexture(room, './src/textures/wall_4.jpg', 'all');
-loadCeilingTexture(room, './src/textures/ceiling_1.jpg');
-clockPuzzle.createBaseClock();
-clockPuzzle.position.set(0, 15,-28);
-clockPuzzle.updateClockhands(245*Math.PI/360,0.5);
-room.addItem(clockPuzzle);
-room.addItem(table);
-room.addItem(riddleMachine);
-room.addItem(couch1);
-room.addItem(couch2);
-//room.addItem(carpet);
-room.addItem(fireplace)
-scene.add(room)
+    const renderer = world.ititialiseRenderer();
+    const scene = world.initializeScene();
+    world.addBaseLighting();
 
-const player = new Player(scene,collidables);
+    // ENHANCED: Realistic Wooden Floor with PBR material
+    loadFloorTexture(room, './src/textures/floor_level1_(1).jpg');
+    loadWallTexture(room, './src/textures/wall_4.jpg', 'all');
+    loadCeilingTexture(room, './src/textures/ceiling_1.jpg');
+    
+    clockPuzzle.createBaseClock();
+    clockPuzzle.position.set(0, 15, -28);
+    clockPuzzle.updateClockhands(245 * Math.PI / 360, 0.5);
+    
+    room.addItem(clockPuzzle);
+    room.addItem(table);
+    room.addItem(riddleMachine);
+    room.addItem(couch1);
+    room.addItem(couch2);
+    room.addItem(fireplace);
+    room.addItem(carpet);
+    scene.add(room);
 
-world.startAnimation(player,riddleMachine);
+    const player = new Player(scene, collidables);
 
+    world.startAnimation(player, riddleMachine);
 }
