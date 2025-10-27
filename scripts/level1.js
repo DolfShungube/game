@@ -38,7 +38,7 @@ function createTable(){
     const tabletopWidth = 8;
     const tabletopDepth = 4;
 
-    //3. creating the tabletop
+    //3. creating the top
     const tabletopGeometry = new THREE.BoxGeometry(tabletopWidth,tabletopThickness, tabletopDepth);
     const tabletop = new THREE.Mesh(tabletopGeometry, woodMaterial);
 
