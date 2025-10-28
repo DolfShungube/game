@@ -8,7 +8,7 @@ export class Room extends THREE.Group{
 
   
 
-    constructor(size={width:60,height:20}){
+    constructor(size={width:45,height:15}){
         super();
         this.size=size;
 
