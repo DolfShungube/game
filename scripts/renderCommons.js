@@ -48,6 +48,8 @@ export class worldBuilder extends THREE.Group{
             LevelLogic();
             }
 
+            
+
             this.renderer.render(this.scene, player.camera);
 
             prevTime = currTime;

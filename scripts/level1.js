@@ -1,4 +1,3 @@
-
 import { Room } from './room';
 import { worldBuilder } from './renderCommons';
 import { Player } from './player';
@@ -7,7 +6,11 @@ import { ClockPuzzle } from './clockPuzzle';
 import { DrawerPuzzle } from './drawerPuzzle';
 import {ButtonPuzzle } from './buttonPuzzle';
 import { CombinationLockPuzzle } from './combinationLockPuzzle';
-
+import { RiddlePuzzle } from './riddlePuzzle';
+import {createTable} from './TableStruct'
+import {Paper} from './level2_paper'
+import {MultiplePapers} from './level2_papers'
+import * as THREE from 'three';
 
 // stuff inside the level1_World function is just for testing, not final: DOLF
 
@@ -18,8 +21,77 @@ let gameTimer=0;  // game time we agreed on
 
 export function level1_World(){
 
+// this is just so I can pass them in the machine I will remove for cleaner code but it doesn't actually cause that much of problems
+//const riddle = "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?";
+//const answer = "map";
+
+
 const world= new worldBuilder();
 const room= new Room();
+ 
+const riddleMachine = new RiddlePuzzle("I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?","map");
+const table=createTable();
+// the paper
+const myPaper = new Paper(6, 8, '../src/textures/test1.png');
+// Create a few notes
+const note1 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  "I counted 52 steps from the mirror to the door.But when I turned around… there were only 51 back.Something walked the last one for me.",
+  new THREE.Vector3(1, 3.03, -20)
+);
+
+const note2 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  'The candles burned for 39 minutes.Then the air grew cold — and the flame bent toward the vent.She’s still breathing in there.”',
+  new THREE.Vector3(5, 3.03, -20)
+);
+
+const note3 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  'Drawer 15… it won’t open.Blood under the handle, like someone tried.Maybe they found what they shouldn’t.”',
+  new THREE.Vector3(7, 3.03, -20)
+);
+
+const note4 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  '72 seconds of light, then darkness again.The generator hums like a heartbeat.I think it knows when I’m watching.”',
+  new THREE.Vector3(10, 3.03, -20)
+);
+const note5 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  'Page 8 is torn out.That’s where the real message was.The rest is just a distraction.”',
+  new THREE.Vector3(13, 3.03, -20)
+);
+
+const note6 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  'he clocks stopped at 9 and 3.Both point to where she hid the key.But only one of them tells the truth.',
+  new THREE.Vector3(16, 3.03, -20)
+);
+
+const note7 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  'Rooms 10 and 11 are connected… but not by doors.The wall hums if you listen closely.Something’s moving between them.',
+  new THREE.Vector3(18, 3.03, -20)
+);
+
+const note8 = new MultiplePapers(
+  '../src/textures/tx1.png',
+  'Between 8 and 11—that’s where it happened.The screams stopped, the scratching didn’t.Don’t open it again.',
+  new THREE.Vector3(20, 3.03, -20)
+)
+
+
+
+
+
+
+myPaper.mesh.position.set(-38.9, 5, 0);
+myPaper.mesh.rotation.y = Math.PI / 2;
+
+
+
+
 
 const renderer = world.ititialiseRenderer();
 const scene= world.initializeScene();
@@ -66,7 +138,7 @@ const collidables =[
   // list of items the player is able to collide with, (everthing should be type wall)
 
   { mesh: room.floor, type: 'floor'},
-  { mesh: room.ceiling, type: 'ceiling'},
+  { mesh: room.ceiling, type: 'ceiling'}, { mesh: riddleMachine, type: 'wall'},{ mesh: table, type: 'wall'}, 
   clock,
   drawer,
   lock1,lock2,lock3,lock4,
@@ -81,7 +153,6 @@ room.generateBaseRoom();
 clock.mesh.scale.set(3,3,3)
 clock.mesh.position.set(0, 20,-38);
 drawer.mesh.position.set(-10,2,-30);
-
 
 lock1.mesh.scale.set(0.3,0.3,0.3)
 lock1.mesh.position.set(-7.9,2,-30.0);
@@ -127,6 +198,20 @@ room.add(lock1.mesh)
 room.add(lock2.mesh)
 room.add(lock3.mesh)
 room.add(lock4.mesh)
+room.add(riddleMachine)
+room.add(myPaper.mesh)
+
+//the notes the code for it is under level2_papers.js
+room.add(note1);
+room.add(note2);
+room.add(note3);
+room.add(note4);
+room.add(note5);
+room.add(note6);
+room.add(note7);
+room.add(note8);
+room.addItem(table);
+
 
 room.add(combinationLock1.mesh)
 room.add(combinationLock2.mesh)
@@ -153,6 +238,13 @@ function customGameLogic(){
   linkDrawerToClock(clock,drawer2)
   linkButtonsToCombinationLock(buttonList,combinationList)
   allCombinationsSolved(combinationList)
+  riddleMachine.updateInteraction()
+
+}
+
+//I am going to do the raycastering part here cause I don't get the code on how you did yours so I will make a function to handle those interacction here
+
+function handleRiddleTrageting(riddleMachine,player){
 
 }
 
@@ -214,9 +306,18 @@ function setConbinationValues(combinationList,values){
 
 
 
+//testing
+riddleMachine.setupInteraction(player.camera,player);
+note1.setupInteraction(player.camera, player);
+note2.setupInteraction(player.camera, player);
+note3.setupInteraction(player.camera, player);
+note4.setupInteraction(player.camera, player);
+note5.setupInteraction(player.camera, player);
+note6.setupInteraction(player.camera, player);
+note7.setupInteraction(player.camera, player);
+note8.setupInteraction(player.camera, player);
 
-
- world.startAnimation(player,customGameLogic);
+ world.startAnimation(player,customGameLogic,);
 
 
 
