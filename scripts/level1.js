@@ -15,7 +15,6 @@ let gameTimer=0;  // game time we agreed on
 
 
 //creating the table in the room ,will move if needed
-
 function createTable(){
   //1 . defining the materials
   const woodMaterial = new THREE.MeshPhongMaterial({
@@ -749,8 +748,8 @@ export function level1_World() {
             furniture: {
                 bookshelf: {
                     enabled: true,
-                    position: { x: 0, y: 0, z: 13 },
-                    scale: 0.7,
+                    position: { x: 0, y: 0, z: 25 },
+                    scale: 1.6,
                     modelUrl: './models/bookshelf.glb'
                 },
                 coffeeTable: {
@@ -758,6 +757,12 @@ export function level1_World() {
                     position: { x: 0, y: 2.0, z: 10 },
                     scale: 1.0,
                     modelUrl: './models/coffee_table.glb'
+                },
+                painting: {
+                    enabled: true,
+                    position: { x: 0, y: 7.5, z: 2.2 },
+                    scale: 1.5,
+                    modelUrl: './models/painting.glb'
                 },
             }
         }
@@ -793,9 +798,9 @@ export function level1_World() {
         { mesh: riddleMachine, type: 'wall'}, 
         { mesh: couch1, type: 'wall'},
         { mesh: couch2, type: 'wall'},
-        // Add furniture to collidables
         ...(room.furniture.bookshelf ? [{ mesh: room.furniture.bookshelf, type: 'furniture' }] : []),
         ...(room.furniture.coffeeTable ? [{ mesh: room.furniture.coffeeTable, type: 'furniture' }] : []),
+        ...(room.furniture.painting ? [{ mesh: room.furniture.painting, type: 'furniture' }] : []),
         ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
     ];
 
@@ -822,6 +827,18 @@ export function level1_World() {
     room.addItem(fireplace);
     room.addItem(carpet);
     scene.add(room);
+
+const bookshelfSpotlight1 = new THREE.SpotLight(0xffffff, 2.5, 30, Math.PI / 4, 0.2, 1.2);
+bookshelfSpotlight1.position.set(1, 15, 15);
+bookshelfSpotlight1.target.position.set(1, 3, 25);
+scene.add(bookshelfSpotlight1);
+scene.add(bookshelfSpotlight1.target);
+
+const bookshelfSpotlight2 = new THREE.SpotLight(0xffffff, 2.0, 25, Math.PI / 3, 0.3, 1.0);
+bookshelfSpotlight2.position.set(10, 12, 25);
+bookshelfSpotlight2.target.position.set(1, 5, 25);
+scene.add(bookshelfSpotlight2);
+scene.add(bookshelfSpotlight2.target);
 
     const player = new Player(scene, collidables);
 

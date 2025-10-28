@@ -66,8 +66,8 @@ export class Room extends THREE.Group {
         const furnitureOptions = this.options.furniture || {
             bookshelf: { 
                 enabled: true, 
-                position: { x: 15, y: 0, z: -25 }, 
-                scale: 0.5,
+                position: { x: 15, y: 0, z: 25 }, 
+                scale: 0.8,
                 modelUrl: './models/bookshelf.glb'
             },
             coffeeTable: { 
@@ -76,6 +76,12 @@ export class Room extends THREE.Group {
                 scale: 0.8,
                 modelUrl: './models/coffee_table.glb'
             },
+            painting: {
+                enabled: true,
+                position: { x: 0, y: 0, z: 0 },
+                scale: 1.5,
+                modelUrl: './models/painting.glb'
+            }
         };
 
         // Add bookshelf
@@ -104,16 +110,33 @@ export class Room extends THREE.Group {
                 
             }
         }
+
+        if (furnitureOptions.painting?.enabled) {
+            console.log('Loading painting model...');
+            try {
+                await this.loadPaintingModel(
+                    furnitureOptions.painting.modelUrl,
+                    furnitureOptions.painting.position,
+                    furnitureOptions.painting.scale
+                );
+                console.log('Painting loaded successfully!');
+            } catch (error) {
+                console.error('Failed to load painting model:', error);
+            }
+        } else {
+            console.log('Painting not enabled in furniture options');
+        }
     }
+
 
     // Load bookshelf GLTF model
     async loadBookshelfModel(url, position = { x: 0, y: 0, z: 0 }, scale = 1) {
         return new Promise((resolve, reject) => {
             this.loader.load(url, (gltf) => {
                 const model = gltf.scene;
-                model.position.set(position.x, position.y-0.9, position.z-0.5);
-                model.scale.set(scale*2, scale*2, scale*2);
-                model.rotation.set( 0, -Math.PI/2, 0);
+                model.position.set(position.x+1, position.y, position.z);
+                model.scale.set(scale*4, scale*4, scale*4);
+                model.rotation.set( -Math.PI/2, Math.PI/2, Math.PI/2);
                 
                 model.traverse((child) => {
                     if (child.isMesh) {
@@ -166,6 +189,44 @@ export class Room extends THREE.Group {
         });
     }
 
+    async loadPaintingModel(url, position = { x: 0, y: 0, z: 0 }, scale = 1) {
+        return new Promise((resolve, reject) => {
+            console.log('Loading painting model from:', url);
+            
+            this.loader.load(url, (gltf) => {
+                console.log('Painting model loaded successfully');
+                const model = gltf.scene;
+                
+                // Set scale and position
+                model.scale.set(scale*7, scale*7, scale*7 );
+                model.position.set(position.x-28, position.y-1.5, position.z+11);
+                model.rotation.set( 0, Math.PI/2, 0);
+                
+                // Enable shadows
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                        console.log('Painting mesh:', child.name || 'unnamed');
+                    }
+                });
+                
+                this.add(model);
+                this.furniture.painting = model;
+                console.log('Painting added to room.furniture');
+                resolve(model);
+            }, 
+            // Progress callback
+            (progress) => {
+                console.log(`Loading painting: ${(progress.loaded / progress.total * 100).toFixed(2)}%`);
+            },
+            // Error callback
+            (error) => {
+                console.error('Error loading painting model:', error);
+                reject(error);
+            });
+        });
+    }
   
     setWallTexture(side, texture) {
         if (this.walls[side]) {
