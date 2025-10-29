@@ -9,6 +9,7 @@
 
 
 import * as THREE from "three";
+import { ButtonPuzzle } from "./buttonPuzzle";
 export class DrawerPuzzle extends THREE.Group{
 
 constructor(){
@@ -17,6 +18,14 @@ constructor(){
 }
 
 createDrawer() {
+
+    const buttonPuzzle= new ButtonPuzzle();
+
+    const button1= buttonPuzzle.createBaseButton();
+    const button2= buttonPuzzle.createBaseButton();
+
+
+
 
     const lock1=this.createBaseLock();
     const lock1Control=lock1.lockControls;
@@ -103,9 +112,18 @@ createDrawer() {
 
     lock4Machanism.mesh.position.set(-1.94,0.07,1.52);
     lock4Machanism.mesh.scale.set(0.125,0.125,0.125);
-    drawerContainer.add(lock4Machanism.mesh) 
+    drawerContainer.add(lock4Machanism.mesh);
+    
+    button1.mesh.position.set(1,0.2,3);
+    button1.mesh.scale.set(0.5,0.5,0.5);
+    button1.mesh.rotation.x=3*Math.PI/2
+    drawerContainer.add(button1.mesh)
 
 
+    button2.mesh.position.set(1,-0.5,3);
+    button2.mesh.scale.set(0.5,0.5,0.5);
+    button2.mesh.rotation.x=3*Math.PI/2
+    drawerContainer.add(button2.mesh)
 
     const compartment1 = new THREE.Group();
     const compWidth = frameWidth - 0.4;
@@ -213,7 +231,9 @@ createDrawer() {
         lock1Control:lock1Control,
         lock2Control:lock2Control,
         lock3Control:lock3Control,
-        lock4Control:lock4Control
+        lock4Control:lock4Control,
+        button1: button1,
+        button2:button2
     };
 
 }
@@ -224,6 +244,7 @@ createBaseDrawer(){
     
 
     const drawerData = this.createDrawer();
+    
 
 
     const mainDrawer={
@@ -236,6 +257,8 @@ createBaseDrawer(){
         type: 'interactable',
         interactionType: 'drawer',
         solved: false,
+
+        button:drawerData.button1,
         
         state: {
             isOpen: false,
@@ -244,9 +267,9 @@ createBaseDrawer(){
             speed: 1.5
         },
         
-        onFocus: function() {
+        // onFocus: function() {
 
-        },
+        // },
         
         onInteract: function(dt, player, input) {
             if (this.solved && input.forward && (!this.state.isOpen||this.openAmount==0)) {
@@ -266,14 +289,21 @@ createBaseDrawer(){
             }
             
             this.updateDrawer();
+            
         },
 
             onUnfocus: function() {
         },
         
         updateDrawer: function(){
+        
             this.mesh.position.z = this.state.openAmount;
+            this.button.mesh.position.z=this.state.openAmount+0.5; // reposition button when drawer moves
             this.checkSolved();
+        },
+
+        placeItem: function(Itemmesh){
+
         },
         checkSolved: function(){
             drawerData.lock1Control.updateSolved();
@@ -306,6 +336,8 @@ createBaseDrawer(){
         mesh: drawerData.compartment2,
         type: 'interactable',
         interactionType: 'drawer',
+        button:drawerData.button2,
+        solved: false,
         
         state: {
             isOpen: false,
@@ -314,12 +346,12 @@ createBaseDrawer(){
             speed: 1.5
         },
         
-        onFocus: function(){
+        // onFocus: function(){
 
-        },
+        // },
         
         onInteract: function(dt, player, input) {
-            if (input.forward && !this.state.isOpen) {
+            if (input.forward && !this.state.isOpen && this.solved) {
                 this.state.openAmount += dt * this.state.speed;
                 if (this.state.openAmount >= this.state.maxOpen) {
                     this.state.openAmount = this.state.maxOpen;
@@ -344,6 +376,8 @@ createBaseDrawer(){
         
         updateDrawer: function() {
             this.mesh.position.z = this.state.openAmount;
+            this.button.mesh.position.z=this.state.openAmount+0.5;
+    
         }
     }
     
@@ -353,7 +387,8 @@ createBaseDrawer(){
 
     return { drawer1, drawer2, container: mainDrawer,lock1:drawerData.lock1Control,
 
-        lock2:drawerData.lock2Control,lock3:drawerData.lock3Control,lock4:drawerData.lock4Control
+        lock2:drawerData.lock2Control,lock3:drawerData.lock3Control,lock4:drawerData.lock4Control,
+        button1:drawerData.button1, button2:drawerData.button2
      };
 
 }
@@ -383,6 +418,14 @@ createDrawerLock(){
 
     lockGroup.add(rim);
     lockGroup.add(lockFace);
+
+
+        const colliderGeometry = new THREE.CylinderGeometry(1.5, 1.5, 0.5, 32); // important fix,
+        const colliderMaterial = new THREE.MeshBasicMaterial({ 
+            visible: false
+        });
+        const collider = new THREE.Mesh(colliderGeometry, colliderMaterial);
+        lockGroup.add(collider); 
 
 
 
@@ -456,9 +499,9 @@ const lockMechanism={
        
        
 
-    onFocus: function(){
+    // onFocus: function(){
         
-    },
+    // },
 
     onInteract: function(dt, player, input){
 

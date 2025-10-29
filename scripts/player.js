@@ -31,7 +31,7 @@ raycaster = new THREE.Raycaster();
 
   constructor(scene,collidables=[]) {
     this.collidables=collidables;
-    this.Setcontrols={forward:"KeyW",backward:"KeyZ",right:"KeyD",left:"KeyA",jump:"Space"}
+    this.Setcontrols={forward:"KeyW",backward:"KeyZ",right:"KeyD",left:"KeyA",jump:"Space",interact:"KeyE",exitInteract:"Space"}
     this.interactionInput={forward:"false",backward:"false",right:"false",left:"false",action:"false",cancel:"false"}
     this.camera.position.set(0, this.height * 0.9, 0);
     scene.add(this.camera);
@@ -194,10 +194,12 @@ checkLookingAt(){
     const intersects = this.raycaster.intersectObjects(validMeshes, true);
   if (intersects.length > 0) {
 
-    // Find the top-level collidable containing the intersected mesh
+
     const obj = this.collidables.find(c => intersects[0].object === c.mesh || c.mesh.children.includes(intersects[0].object));
         
     if (obj && obj.type === "interactable"){
+
+
      
      this.highlighted = obj;
       return obj;
@@ -215,13 +217,8 @@ toggleFocus() {
   if (!this.isFocusing) {
     if (!this.highlighted) return;
     
-    // Safety check: ensure highlighted object has a valid mesh
-    if (!this.highlighted.mesh) {
-      console.error('Highlighted object missing mesh property:', this.highlighted);
-      return;
-    }
 
-    // Do a raycast to get the exact hit point and face normal
+
     const dir = new THREE.Vector3();
     this.camera.getWorldDirection(dir);
     this.raycaster.set(this.camera.position, dir);
@@ -235,28 +232,27 @@ toggleFocus() {
     this.originalCameraRot = this.camera.quaternion.clone();
     this.controls.enabled = false;
 
-    // Call onFocus callback if it exists
+
     if (this.focusTarget.onFocus) {
       this.focusTarget.onFocus(this);
     }
 
-    // Get the hit point and face normal
     const hitPoint = intersects[0].point;
     const faceNormal = intersects[0].face ? intersects[0].face.normal.clone() : dir.clone().negate();
     
-    // Transform normal to world space
+
     const worldNormal = faceNormal.clone().transformDirection(intersects[0].object.matrixWorld);
 
-    // Get object bounds for sizing
+
     const box = new THREE.Box3().setFromObject(this.focusTarget.mesh);
     const size = new THREE.Vector3();
     box.getSize(size);
 
-    // Calculate optimal distance based on object size
+
     const fov = this.camera.fov * (Math.PI / 180);
     const aspect = this.camera.aspect;
     
-    // Use the face dimensions for better framing
+
     const objectSize = Math.max(size.x, size.y, size.z);
     const distanceY = (objectSize * 0.8) / Math.tan(fov / 2);
     const distanceX = (objectSize * 0.8) / (Math.tan(fov / 2) * aspect);
@@ -264,19 +260,19 @@ toggleFocus() {
     const baseDistance = Math.max(distanceX, distanceY);
     const safeDistance = Math.max(baseDistance, 0.2);
 
-    // Focus point is the hit point on the face
+
     this.focusCenter = hitPoint.clone();
     
-    // Position camera perpendicular to the face
+
     this.targetPos = hitPoint.clone().add(worldNormal.multiplyScalar(safeDistance));
     
-    // Look directly at the hit point
+
     this.targetQuat = new THREE.Quaternion().setFromRotationMatrix(
       new THREE.Matrix4().lookAt(this.targetPos, this.focusCenter, new THREE.Vector3(0, 1, 0))
     );
 
   } else {
-    // Call onUnfocus callback if it exists
+
     if (this.focusTarget && this.focusTarget.onUnfocus) {
       this.focusTarget.onUnfocus(this);
     }
@@ -284,7 +280,7 @@ toggleFocus() {
     this.isFocusing = false;
     this.focusTarget = null;
     
-    // Reset interaction inputs
+
     this.interactionInput = {
       forward: false,
       backward: false,
@@ -305,14 +301,16 @@ toggleFocus() {
   }
 }
 
-// Update your updateFocus method to call onInteract:
+
 updateFocus(dt) {
   if (this.isFocusing) {
-    // Smoothly move camera to target
+
+    if(this.focusTarget.onFocus){
     this.camera.position.lerp(this.targetPos, Math.min(this.focusSpeed * dt, 1));
     this.camera.quaternion.slerp(this.targetQuat, Math.min(this.focusSpeed * dt, 1));
+  }
     
-    // Call the object's interaction handler
+
     if (this.focusTarget && this.focusTarget.onInteract) {
     
       this.focusTarget.onInteract(dt, this, this.interactionInput);
@@ -332,7 +330,7 @@ updateFocus(dt) {
 onKeyDown(event) {
   if (!this.controls.isLocked && !this.isFocusing) this.controls.lock();
 
-  // When focused, route inputs to the interactable object
+
   if (this.isFocusing && this.focusTarget) {
     switch (event.code) {
       case this.Setcontrols.forward:
@@ -347,18 +345,18 @@ onKeyDown(event) {
       case this.Setcontrols.right:
         this.interactionInput.right = true;
         break;
-      case "KeyE":
+      case this.Setcontrols.interact:
         this.interactionInput.action = true;
         break;
-      case "Space":
+      case this.Setcontrols.exitInteract:
         this.interactionInput.cancel = true;
-        this.toggleFocus(); // Exit focus mode
+        this.toggleFocus();
         break;
     }
-    return; // Don't process normal movement when focused
+    return;
   }
 
-  // Normal movement controls when not focused
+
   switch (event.code) {
     case this.Setcontrols.forward: 
       this.input.z = 1; 
@@ -372,7 +370,7 @@ onKeyDown(event) {
     case this.Setcontrols.right: 
       this.input.x = 1; 
       break;
-    case "KeyE": 
+    case this.Setcontrols.interact: 
       this.toggleFocus();
       break;
     case this.Setcontrols.jump:
@@ -384,7 +382,7 @@ onKeyDown(event) {
   }
 }
 
-// Update your onKeyUp method:
+
 onKeyUp(event) {
   if (this.isFocusing && this.focusTarget) {
     switch (event.code) {
@@ -400,18 +398,18 @@ onKeyUp(event) {
       case this.Setcontrols.right:
         this.interactionInput.right = false;
         break;
-      case "KeyE":
+      case this.Setcontrols.interact:
         this.interactionInput.action = false;
         break;
-      case "Escape":
+      case this.Setcontrols.exitInteract:
         this.interactionInput.cancel = false;
         break;
     }
     return;
   }
 
-  // Normal key up handling
-  switch (event.code) {
+
+  switch (event.code){
     case this.Setcontrols.forward:
     case this.Setcontrols.backward:
       this.input.z = 0;
