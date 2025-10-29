@@ -8,7 +8,7 @@ export class Room extends THREE.Group{
 
   
 
-    constructor(size={width:80,height:50}){
+    constructor(size={width:45,height:15}){
         super();
         this.size=size;
 
@@ -64,7 +64,7 @@ export class Room extends THREE.Group{
     );
     ceiling.rotation.x =Math.PI/2;
     ceiling.position.y =this.size.height;
-   // this.add(ceiling);  
+   this.add(ceiling);  
     this.ceiling = ceiling;
   }
   
