@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stove (кухонная плита)
+* source:	https://sketchfab.com/3d-models/stove-ce1b6ea7575e409393438328174d68b4
+* author:	VVMGames (https://sketchfab.com/vvmgames)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stove (кухонная плита)" (https://sketchfab.com/3d-models/stove-ce1b6ea7575e409393438328174d68b4) by VVMGames (https://sketchfab.com/vvmgames) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

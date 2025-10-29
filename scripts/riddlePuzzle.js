@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {RiddleUI} from './riddleUI'; 
+import {RiddleUI} from './RiddleUI'; 
 import { TextureLoader } from 'three';
  
 

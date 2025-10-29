@@ -1213,6 +1213,4 @@ function setConbinationValues(combinationList,values){
 
 
 
-
-
 }

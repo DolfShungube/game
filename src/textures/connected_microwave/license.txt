@@ -1,0 +1,11 @@
+Model Information:
+* title:	Connected Microwave
+* source:	https://sketchfab.com/3d-models/connected-microwave-e5449c37bb284598b6c838106f925c0c
+* author:	johnathany (https://sketchfab.com/johnathany)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Connected Microwave" (https://sketchfab.com/3d-models/connected-microwave-e5449c37bb284598b6c838106f925c0c) by johnathany (https://sketchfab.com/johnathany) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
