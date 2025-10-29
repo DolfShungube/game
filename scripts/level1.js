@@ -321,6 +321,4 @@ note8.setupInteraction(player.camera, player);
 
 
 
-
-
 }
