@@ -9,6 +9,7 @@ constructor(){
 
 }
 
+
 loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, name = 'model') {
     const loader = new GLTFLoader();
     const modelGroup = new THREE.Group();
