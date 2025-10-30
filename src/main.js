@@ -1,9 +1,20 @@
 import { level1_World } from '../scripts/level1.js';
+import { Level1 } from '../scripts/level1World.js';
 import { level2_World } from '../scripts/level2.js';
+
+//const level1= await level1_World();
+
+const world = new Level1()
+world.init()
+setTimeout(()=>{world.startGame()},1000)
+// setTimeout(()=>{world.pauseGame()},10000)
+// setTimeout(()=>{world.unPauseGame()},20000)
+
 //import { level1_World } from '../scripts/level1.js';
 
 const app = document.getElementById('app');
 const menu = document.getElementById('menu-container');
+
 
 // Create a back button dynamically (so it’s not in HTML)
 const backButton = document.createElement('button');
@@ -42,7 +53,7 @@ function startLevel(levelNum) {
 
   switch (levelNum) {
     case 1:
-      level1_World();
+      Level1;
       break;
     case 2:
       level2_World?.();

@@ -34,30 +34,115 @@ export class worldBuilder extends THREE.Group{
 
 
     startAnimation(player,LevelLogic = null){
+
+        this.initTimer()
+        this.remainingTime= this.worldTimer
+        
+
+
+        if (this.isAnimating) return;
         let prevTime = performance.now();
+        this.isAnimating=true
+        this.pause=false
+        this.lastTimerUpdate = prevTime;
+        this.createTimerOverlay();
+
 
         const animate = () => {
+            if (!this.isAnimating) return;
+            
             const currTime = performance.now();
             const dt = (currTime - prevTime) / 1000;
+            if(!this.pause){
 
             player.applyInputs(dt);
             player.checkLookingAt();
             player.updateFocus(dt);
-
+             this.updateTimer(currTime);
+            this.renderer.render(this.scene, player.camera);
+                    
+        }
             if (LevelLogic && typeof LevelLogic === 'function') {
             LevelLogic();
-            }
-
-            
-
-            this.renderer.render(this.scene, player.camera);
-
+            }                    
             prevTime = currTime;
-            requestAnimationFrame(animate);
+           
+            this.animationId=requestAnimationFrame(animate);
         };
 
+      
+        player.controls.enabled=true;
         animate();
     }
+
+stopAnimation(){
+    this.isAnimating=false;
+    this.removeTimerOverlay();
+    if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+        this.animationId = null;
+        
+    }
+}
+
+initTimer(secondTime=300){
+
+    this.worldTimer=secondTime
+
+}
+
+pauseAnimation(){
+    this.pause=true
+}
+
+unPauseAnimation(){
+    this.pause=false
+    this.lastTimerUpdate = performance.now();
+}
+
+
+createTimerOverlay() {
+    let timer = document.getElementById("game-timer");
+    if (!timer) {
+        timer = document.createElement("div");
+        timer.id = "game-timer";
+        timer.style.position = "fixed";
+        timer.style.top = "20px";
+        timer.style.right = "30px";
+        timer.style.padding = "10px 20px";
+        timer.style.background = "rgba(0,0,0,0.6)";
+        timer.style.color = "white";
+        timer.style.fontSize = "24px";
+        timer.style.fontFamily = "monospace";
+        timer.style.borderRadius = "8px";
+        timer.style.zIndex = "9999";
+        document.body.appendChild(timer);
+    }
+    timer.textContent = `${this.remainingTime}`;
+}
+
+
+updateTimer(currTime) {
+
+    const elapsed = (currTime - this.lastTimerUpdate) / 1000;
+    if (elapsed >= 1) {
+        this.remainingTime -= Math.floor(elapsed);
+        this.lastTimerUpdate = currTime;
+        const timer = document.getElementById("game-timer");
+        if (timer) timer.textContent = `${Math.max(this.remainingTime, 0)}`;
+        if (this.remainingTime <= 0) {
+            this.stopAnimation();
+
+        }
+    }
+}
+
+
+removeTimerOverlay() {
+    const timer = document.getElementById("game-timer");
+    if (timer) timer.remove();
+}
+
 
 
 
