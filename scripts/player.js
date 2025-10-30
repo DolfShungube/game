@@ -9,7 +9,7 @@ export class Player{
 focusTarget = null;   // the interactable object we’re focused on
 originalCameraPos = null; // store camera before zoom
 originalControlsEnabled = true; // track controls state
-focusSpeed = 5; // how fast the camera moves to the object
+focusSpeed = 5; 
   maxSpeed =20;
   height =6;
   radius =0.5;
@@ -32,7 +32,7 @@ raycaster = new THREE.Raycaster();
     this.collidables=collidables;
     this.Setcontrols={forward:"KeyW",backward:"KeyZ",right:"KeyD",left:"KeyA",jump:"Space",interact:"KeyE",exitInteract:"Space"}
     this.interactionInput={forward:"false",backward:"false",right:"false",left:"false",action:"false",cancel:"false"}
-    this.camera.position.set(0, this.height * 0.9, 0);
+    this.camera.position.set(-1, this.height * 0.9, -1);
     scene.add(this.camera);
 
 
@@ -103,6 +103,10 @@ applyInputs(dt){
 
   this.vy+=this.gravity*dt;
   this.camera.position.y +=this.vy*dt;
+
+  if(this.camera.position.y<0){
+    this.camera.position.set(-1, this.height * 0.9, -1);
+  }
 
   const groundHit=this.checkGround();
   if (groundHit&&this.vy<=0) {

@@ -13,12 +13,12 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
     const loader = new GLTFLoader();
     const modelGroup = new THREE.Group();
     
-    // Support both old format (single number) and new format (object with x,y,z)
+
     if (typeof rotation === 'number') {
         rotation = { x: 0, y: rotation, z: 0 };
     }
     
-    console.log(`🔍 Starting ${name} load...`);
+
     
     // Try multiple possible paths
     const basePath = modelUrl.replace('./', '').replace('/', '');
@@ -32,6 +32,8 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
     ];
     
     let currentPathIndex = 0;
+
+    
     
     function attemptLoad() {
         const currentPath = paths[currentPathIndex];
@@ -41,7 +43,7 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
             currentPath,
             // Success callback
             function (gltf) {
-                console.log(`✅ SUCCESS! ${name} loaded from:`, currentPath);
+
                 
                 const model = gltf.scene;
                 
@@ -86,31 +88,25 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
                 // Add bounding box helper for debugging
                 const box = new THREE.Box3().setFromObject(modelGroup);
                 const size = box.getSize(new THREE.Vector3());
-                console.log(`📦 ${name} dimensions:`, {
-                    width: size.x.toFixed(2),
-                    height: size.y.toFixed(2),
-                    depth: size.z.toFixed(2)
-                });
-                console.log(`📍 ${name} position:`, modelGroup.position);
-                console.log(`🔄 ${name} rotation:`, modelGroup.rotation);
+
+
             },
             // Progress callback
             function (xhr) {
                 if (xhr.lengthComputable) {
                     const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
-                    console.log(`Loading ${name}: ${percent}%`);
+
                 }
             },
             // Error callback
             function (error) {
-                console.error(`❌ Failed to load ${name} from ${currentPath}:`, error.message);
+
                 
                 currentPathIndex++;
                 if (currentPathIndex < paths.length) {
-                    console.log(`⚠️ Trying next path for ${name}...`);
+
                     attemptLoad();
                 } else {
-                    console.error(`❌ All paths failed for ${name}!`);
                     createPlaceholder(scene, position, scale, rotation, name);
                 }
             }

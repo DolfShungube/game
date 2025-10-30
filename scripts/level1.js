@@ -21,17 +21,22 @@ import { Wall } from './wall';
 import { ModelLoader } from './modelLoader';
 
 
-let gameLevelComplete=false; 
+let gameLevelComplete=false;
 
-export function level1_World(){
 
-const world= new worldBuilder();
+export async function level1_World(){
+
+
+
+const world= new worldBuilder(); 
 const room= new Room();
 const Table= new table1();
 const Bookshelf= new BookShelf()
 const Couch1 = new Couch()
 const Carpet1= new Carpet()
 const Fireplace= new FirePlace()
+
+
 
 
 
@@ -46,7 +51,7 @@ const floor= new Floor()
 const wall= new Wall()
 const ceiling= new Ceiling()
 const clock=clockPuzzle.createBaseClock();
-const dail= dailPuzzle.createBaseDail()
+//const dail= dailPuzzle.createBaseDail()
 
 const Basedrawer= drawerPuzzle.createBaseDrawer();
 const combinationLockPuzzle= new CombinationLockPuzzle()
@@ -139,26 +144,16 @@ const collidables =[
   lock1,lock2,lock3,lock4,
   drawer1,drawer2,
   button1,button2,button3,button4,
-  dail,
+  {mesh:bookshelf,type:'wall'},
+  {mesh:table_model_lamp,type:'wall'},
+  {mesh:fireplace,type:'wall'},
+  //{mesh:riddleMachine,type:'interactable'},
   combinationLock1,combinationLock2,combinationLock3,combinationLock4,
   
   ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
 ];
 
 room.generateBaseRoom();
-clock.mesh.scale.set(3,3,3)
-clock.mesh.position.set(0, 20,-38);
-drawer.mesh.position.set(-10,2,-30);
-
-
-lock1.mesh.scale.set(0.3,0.3,0.3)
-lock1.mesh.position.set(-7.9,2,-30.0);
-lock1.mesh.rotation.y=Math.PI/2
-
-lock2.mesh.scale.set(0.3,0.3,0.3)
-lock2.mesh.rotation.y=Math.PI/2
-lock2.mesh.position.set(-38.5,5,10);
-
 
 
  floor.loadFloorTexture(room, './src/textures/floor_level1_(1).jpg');
@@ -166,45 +161,58 @@ lock2.mesh.position.set(-38.5,5,10);
  ceiling.loadCeilingTexture(room, './src/textures/ceiling_1.jpg');
 
 
-clock.mesh.scale.set(3,3,3)
+clock.mesh.scale.set(2,2,2)
 clock.mesh.position.set(0, 9, -21.0);
-drawer.mesh.position.set(-10,1.5,-20);
 
+drawer.mesh.position.set(-19,1.5,-18);
+drawer.mesh.rotation.y=Math.PI/2
 
-button3.mesh.position.set(-2,3,0)
+button3.mesh.position.set(-19.5,1.95,-10)
 button3.mesh.scale.set(0.5,0.5,0.5)
+button3.mesh.rotation.x=-Math.PI/2
 
-button4.mesh.position.set(2,3,0)
+
+
+
+button4.mesh.position.set(-12,5.4,20)
 button4.mesh.scale.set(0.5,0.5,0.5)
+button4.mesh.rotation.x=-Math.PI/2
 
-dail.mesh.position.set(0,4,5)
+lock1.mesh.scale.set(0.3,0.3,0.3)
+lock1.mesh.position.set(-19,2,-15.9);
+lock1.mesh.rotation.z=Math.PI/2
+
+lock2.mesh.scale.set(0.3,0.3,0.3)
+lock2.mesh.rotation.y=Math.PI/2
+lock2.mesh.position.set(-21,8.7,4.9);
 
 lock3.mesh.scale.set(0.3,0.3,0.3)
 lock3.mesh.rotation.y=3*Math.PI/2
-lock3.mesh.position.set(21.3,3,-8);
+lock3.mesh.position.set(17.2,2.8,-13);
 
 lock4.mesh.scale.set(0.3,0.3,0.3)
-lock4.mesh.rotation.y=Math.PI
-lock4.mesh.position.set(7,5,21.3);
+lock4.mesh.rotation.x=Math.PI/2
+lock4.mesh.position.set(8,2.3,3);
 
-button3.mesh.position.set(-2,3,-9)
-button3.mesh.scale.set(0.5,0.5,0.5)
 
-button4.mesh.position.set(2,3,-9)
-button4.mesh.scale.set(0.5,0.5,0.5)
+
 
 
 combinationLock1.mesh.rotation.z = Math.PI / 2;
-combinationLock1.mesh.position.set(-0.5,3,-22.0)
+combinationLock1.mesh.rotation.y = -Math.PI;
+combinationLock1.mesh.position.set(-0.5,6,22.1)
 
 combinationLock2.mesh.rotation.z = Math.PI / 2;
-combinationLock2.mesh.position.set(0.5,3,-22.0)
+combinationLock2.mesh.rotation.y = -Math.PI;
+combinationLock2.mesh.position.set(1,7,22.1)
 
-combinationLock3.mesh.rotation.z = Math.PI / 2;
-combinationLock3.mesh.position.set(1.5,3,-22.0)
+combinationLock3.mesh.rotation.z = Math.PI/2 ;
+combinationLock3.mesh.rotation.y = -Math.PI;
+combinationLock3.mesh.position.set(1,5,22.1)
 
-combinationLock4.mesh.rotation.z = Math.PI / 2;
-combinationLock4.mesh.position.set(2.5,3,-22.0)
+combinationLock4.mesh.rotation.z = Math.PI/2;
+combinationLock4.mesh.rotation.y = -Math.PI;
+combinationLock4.mesh.position.set(2.5,6,22.1)
 
 
 room.addItem(clock.mesh)
@@ -316,13 +324,7 @@ function setConbinationValues(combinationList,values){
 
 }
 
-
-
-
-
-
  world.startAnimation(player,customGameLogic);
-
 
 
 }

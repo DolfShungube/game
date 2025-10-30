@@ -326,6 +326,10 @@ createBaseDrawer(){
             ){
                 this.solved=true;
             }else{
+                // console.log("1",drawerData.lock1Control.solved)
+                // console.log("2",drawerData.lock2Control.solved)
+                // console.log("3",drawerData.lock3Control.solved)
+                // console.log("4",drawerData.lock4Control.solved)
                 this.solved=false;
             }
         }   
@@ -489,7 +493,7 @@ const lockMechanism={
         rotationAngle:0,
 
         state:{
-            angle:0,
+            angle:2,
             rotationSpeed:1.5
         },
         lockMechanism: lockMechanism,
