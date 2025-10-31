@@ -9,10 +9,31 @@ import { ModelLoader } from './modelLoader';
 import { CombinationLockPuzzle } from './combinationLockPuzzle';
 import { MultiplePapers } from './level3_papers';
 
+
+
+//this are purely just helper functions to manage loading overlay
+const updateLoadingStatus = (message) => {
+    const statusElement = document.getElementById('loading-status');
+    if (statusElement) {
+        statusElement.textContent = message;
+    }
+};
+
+
+const toggleLoadingOverlay = (isVisible) => {
+    const overlayElement = document.getElementById('loading-overlay');
+    if (overlayElement) {
+        overlayElement.style.display = isVisible ? 'flex' : 'none'; 
+    }
+};
+
 export class Level3_World {
     worldLoading = true;
     LevelComplete = false;
     timeComplete = false;
+
+    // Background music
+    bgMusic = null;
 
     constructor() {
         // Initialize all properties
@@ -37,6 +58,11 @@ export class Level3_World {
     }
 
     async init() {
+        this.worldLoading = true;
+        toggleLoadingOverlay(true);
+        updateLoadingStatus("Initializing escape room world...")
+
+
         // Initialize world and renderer
         this.world = new worldBuilder(); 
         this.renderer = this.world.ititialiseRenderer();
@@ -333,6 +359,11 @@ export class Level3_World {
         this.player = new Player(this.scene, this.collidables);
         this.player.controls.enabled = false;
 
+        
+        
+            
+
+
 
         //This is to setup interaction for the notes in the level
         this.note1.setupInteraction(this.player.camera, this.player);
@@ -344,6 +375,40 @@ export class Level3_World {
         this.note7.setupInteraction(this.player.camera, this.player);
         this.note8.setupInteraction(this.player.camera, this.player);
         //--------------------------------------------
+
+        // Load and set up background music
+            
+        const listener = new THREE.AudioListener();
+        this.player.camera.add( listener );
+        this.bgMusic = new THREE.Audio( listener );
+        const audioLoader = new THREE.AudioLoader();
+                
+        updateLoadingStatus("Loading the Room....");
+
+        await new Promise(resolve => {
+            audioLoader.load( './src/textures/escape.mp3', ( buffer ) => {
+            this.bgMusic.setBuffer( buffer );
+            this.bgMusic.setLoop( true );
+            this.bgMusic.setVolume( 0.3 );
+            updateLoadingStatus("Music loaded. Finishing setup...");
+            resolve(); // Resolve the promise once loading is complete
+            },
+            ( progress ) => {
+           
+            const percent = Math.round((progress.loaded / progress.total) * 100);
+            updateLoadingStatus(`Loading Room and Music: ${percent}%`);
+        },
+        ( error ) => {
+            
+            console.log('Error loading background music:', error);
+            updateLoadingStatus("Music failed to load. Starting game without music.");
+            resolve(); 
+        }
+         );
+            });
+
+        this.worldLoading = false;
+        toggleLoadingOverlay(false);
     }
 
     customGameLogic(){
@@ -396,12 +461,17 @@ allCombinationsSolved(combinationList){
     startGame() {
         if (this.world && this.player) {
             this.world.startAnimation(this.player, () => this.customGameLogic());
+
+            if(this.bgMusic && this.bgMusic.buffer && !this.bgMusic.isPlaying) {
+            this.bgMusic.play();
+            }
         }
     }
 
     endGame() {
         if (this.world) {
             this.world.stopAnimation();
+            this.bgMusic.stop();
         }
     }
 

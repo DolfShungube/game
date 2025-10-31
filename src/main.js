@@ -59,7 +59,7 @@ async function startLevel(levelNum) {
                 break;
             case 3:
                 currentLevel = new Level3_World();
-                currentLevel.init();
+                await currentLevel.init();
                 currentLevel.startGame()
                 break;
             default:

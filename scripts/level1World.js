@@ -19,19 +19,37 @@ import { Wall } from './wall';
 import { ModelLoader } from './modelLoader';
 
 
+//this are purely just helper functions to manage loading overlay
+const updateLoadingStatus = (message) => {
+    const statusElement = document.getElementById('loading-status');
+    if (statusElement) {
+        statusElement.textContent = message;
+    }
+};
+
+
+const toggleLoadingOverlay = (isVisible) => {
+    const overlayElement = document.getElementById('loading-overlay');
+    if (overlayElement) {
+        overlayElement.style.display = isVisible ? 'flex' : 'none'; 
+    }
+};
+
 export class Level1{
 
     worldLoading=true;
     LevelComplete=false;
     timeComplete=false;
     
+     // Background music
+    bgMusic = null;
     
 
     constructor(){
 
 
 
-}
+    }
 
 
 
@@ -105,7 +123,15 @@ export class Level1{
 
     }
 
+
+
     async init(){
+
+    //added this for the purpose of music loading screen
+    this.worldLoading = true;
+    toggleLoadingOverlay(true);
+    updateLoadingStatus("Initializing escape room world...");
+
     this.world= new worldBuilder(); 
     this.renderer = this.world.ititialiseRenderer();
     this.scene= this.world.initializeScene();
@@ -117,6 +143,7 @@ export class Level1{
     ...Object.values(this.room.walls).map(w => ({ mesh: w, type: 'wall' }))
 
 ]
+    
 
     this.Table= new table1();
     this.Bookshelf= new BookShelf()
@@ -347,9 +374,39 @@ export class Level1{
     this.riddleMachine.setupInteraction(this.player.camera, this.player);
     //---------------------------------
 
+    //background music
+  
+    const listener = new THREE.AudioListener();
+    this.player.camera.add( listener );
+    this.bgMusic = new THREE.Audio( listener );
+    const audioLoader = new THREE.AudioLoader();
+
+    updateLoadingStatus("Loading the Room....");
+    await new Promise(resolve => {
+        audioLoader.load( './src/textures/escape.mp3', ( buffer ) => {
+        this.bgMusic.setBuffer( buffer );
+        this.bgMusic.setLoop( true );
+        this.bgMusic.setVolume( 0.3 );
+        updateLoadingStatus("Music loaded. Finishing setup...");
+        resolve(); // Resolve the promise once loading is complete
+     },
+     ( progress ) => {
+            
+            const percent = Math.round((progress.loaded / progress.total) * 100);
+            updateLoadingStatus(`Loading Room and Music: ${percent}%`);
+        },
+     );
+    });
+    //-----------------
+
+
     this.buttonList=[this.button1,this.button2,this.button3,this.button4]
     this.combinationList=[this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4]
     this.combinationValues=[1,2,3,4]
+
+
+    this.worldLoading = false;
+    toggleLoadingOverlay(false); // Hide the overlay before the game starts
 
     }  
 
@@ -377,11 +434,16 @@ export class Level1{
 
     startGame(){
         this.world.startAnimation(this.player,() => this.customGameLogic())
-       }
+        
+        if(this.bgMusic && this.bgMusic.buffer && !this.bgMusic.isPlaying) {
+        this.bgMusic.play();
+        }
+    }
 
     endGame(){
         //also the timer
         this.world.stopAnimation();
+        this.bgMusic.stop();
     }
 
      pauseGame(){
