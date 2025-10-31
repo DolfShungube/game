@@ -233,7 +233,8 @@ export class Level1{
     {mesh:this.bookshelf,type:'wall'},
     {mesh:this.table_model_lamp,type:'wall'},
     {mesh:this.fireplace,type:'wall'},
-    //{mesh:riddleMachine,type:'interactable'},
+    {mesh:this.table,type:'wall'},
+    {mesh:this.riddleMachine,type:'interactable'},
     this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4]
 
     for(let i=0;i<list.length;i++){
@@ -241,7 +242,6 @@ export class Level1{
     }
 
  
-
 
 
 
@@ -317,7 +317,7 @@ export class Level1{
     this.room.add(this.button4.mesh)
 
     this.room.addItem(this.clockPuzzle);
-    this.room.addItem(this.riddleMachine);
+    this.room.add(this.riddleMachine);
     this.room.addItem(this.rimLight);
     this.room.addItem(this.fireplace);
     this.room.addItem(this.fillLight);
@@ -342,15 +342,22 @@ export class Level1{
     this.player.controls.enabled=false;
     //const controls= new OrbitControls(this.player.camera,this.renderer.domElement)
 
+    
+    // FOR RIDDLE MACHINE INTERACTION
+    this.riddleMachine.setupInteraction(this.player.camera, this.player);
+    //---------------------------------
+
     this.buttonList=[this.button1,this.button2,this.button3,this.button4]
     this.combinationList=[this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4]
     this.combinationValues=[1,2,3,4]
 
     }  
 
+ 
+    
 
     customGameLogic(){
-
+        this.riddleMachine.updateInteraction();
         this.linkDrawerToClock(this.clock,this.drawer2)
         this.linkButtonsToCombinationLock(this.buttonList,this.combinationList)
         this.allCombinationsSolved(this.combinationList)

@@ -7,6 +7,7 @@ import { Wall_Level3 } from './wall_level3';
 import { Floor_Level3 } from './floor_level3';
 import { ModelLoader } from './modelLoader';
 import { CombinationLockPuzzle } from './combinationLockPuzzle';
+import { MultiplePapers } from './level3_papers';
 
 export class Level3_World {
     worldLoading = true;
@@ -60,11 +61,56 @@ export class Level3_World {
         this.combList=[this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4,this.combinationLock5,this.combinationLock6,this.combinationLock7]
 
         this.setConbinationValues(this.combList,[2,1,5,5,8,3,9])
+
+        //the notes in the level
+        this.note1 = new MultiplePapers('../src/textures/tx1.png', 
+        "I counted 52 steps from the mirror to the door. But when I turned back… there were only 51. Someone walked the last one for me.", 
+        new THREE.Vector3(-5, 5, -5) 
+        );
+        this.note2 = new MultiplePapers('../src/textures/tx1.png', 
+        "The candles burned for 39 minutes. Then the air grew cold — and the flame bent toward the vent. She’s still breathing in there.", 
+        new THREE.Vector3(-3, 5, -7)
+        );
+        
+        this.note3 = new MultiplePapers('../src/textures/tx1.png', 
+        "Drawer 15… it won’t open. Blood under the handle, like someone tried. Perhaps they found what they shouldn’t.", 
+        new THREE.Vector3(-1, 5, 1)
+        );
+        this.note4 = new MultiplePapers('../src/textures/tx1.png', 
+        "72 seconds of light, then darkness again. The generator hums like a heartbeat. I think it knows when I’m watching.", 
+        new THREE.Vector3(2, 5, 1)
+        );
+        this.note5 = new MultiplePapers('../src/textures/tx1.png', 
+        "The clocks stopped at 9 and 3. Both point to where she hid the key, but only one tells the truth.", 
+        new THREE.Vector3(5, 5, 1)
+        );
+        this.note6 = new MultiplePapers('../src/textures/tx1.png', 
+        "Rooms 10 and 11 are connected… but not by doors. The wall hums if you listen closely. Something moves between them.", 
+        new THREE.Vector3(8, 5, 1)
+        );
+        this.note7 = new MultiplePapers('../src/textures/tx1.png', 
+        "Between 8 and 11 — that’s where it happened. The screams stopped, the scratching didn’t. Don’t open it again.", 
+        new THREE.Vector3(10, 5, 1)
+        );
+        this.note8 = new MultiplePapers('../src/textures/tx1.png', 
+        "Page 8 is torn out. That’s where the real message was. The rest is just a distraction.", 
+        new THREE.Vector3(13, 5, 1)
+        );
+
+
         
 
         this.collidables = [
             { mesh: this.room.floor, type: 'floor' },
             { mesh: this.room.ceiling, type: 'ceiling' },
+            { mesh: this.note1, type: 'interactable' },
+            { mesh: this.note2, type: 'interactable' },
+            { mesh: this.note3, type: 'interactable' },
+            { mesh: this.note4, type: 'interactable' },
+            { mesh: this.note5, type: 'interactable' },
+            { mesh: this.note6, type: 'interactable' },
+            { mesh: this.note7, type: 'interactable' },
+            { mesh: this.note8, type: 'interactable' },
             this.combinationLock6,this.combinationLock5,this.combinationLock4,this.combinationLock3,this.combinationLock2,this.combinationLock1,this.combinationLock7,
             ...Object.values(this.room.walls).map(w => ({ mesh: w, type: 'wall' }))
         ];
@@ -84,6 +130,7 @@ export class Level3_World {
         this.wall_level3.loadAdvancedWallTexture(this.room);
         this.ceiling.loadCeilingTexture(this.room, './src/textures/ceiling_1.jpg');
 
+        
 
 
         
@@ -131,6 +178,17 @@ export class Level3_World {
         this.room.add(this.combinationLock5.mesh)
         this.room.add(this.combinationLock6.mesh)
         this.room.add(this.combinationLock7.mesh)
+
+        // this is my notes added to the scene
+        this.room.add(this.note1);
+        this.room.add(this.note2);
+        this.room.add(this.note3);
+        this.room.add(this.note4);
+        this.room.add(this.note5);
+        this.room.add(this.note6);
+        this.room.add(this.note7);
+        this.room.add(this.note8);
+        //--------------------------------------
 
         // Loading models
         this.Table = this.modelLoader.loadModel(
@@ -274,10 +332,22 @@ export class Level3_World {
         
         this.player = new Player(this.scene, this.collidables);
         this.player.controls.enabled = false;
+
+
+        //This is to setup interaction for the notes in the level
+        this.note1.setupInteraction(this.player.camera, this.player);
+        this.note2.setupInteraction(this.player.camera, this.player);
+        this.note3.setupInteraction(this.player.camera, this.player);
+        this.note4.setupInteraction(this.player.camera, this.player);
+        this.note5.setupInteraction(this.player.camera, this.player);
+        this.note6.setupInteraction(this.player.camera, this.player);
+        this.note7.setupInteraction(this.player.camera, this.player);
+        this.note8.setupInteraction(this.player.camera, this.player);
+        //--------------------------------------------
     }
 
     customGameLogic(){
-
+       
         this.allCombinationsSolved(this.combList)
         this.gameState()
        

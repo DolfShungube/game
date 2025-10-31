@@ -84,7 +84,8 @@ export class RiddlePuzzle extends THREE.Group{
             this.camera.getWorldDirection(cameraDir);
 
             // known paper world position (you can also store this dynamically)
-            const paperWorldPos = new THREE.Vector3(-32, 3.03, -36);
+           const paperWorldPos = new THREE.Vector3();
+           this.paperMesh.getWorldPosition(paperWorldPos);
 
             // compute direction and distance to paper
             const toPaper = paperWorldPos.clone().sub(cameraPos);
@@ -95,7 +96,7 @@ export class RiddlePuzzle extends THREE.Group{
             const facingDot = cameraDir.dot(toPaper);
 
             // ---- tweak these thresholds ----
-            const closeEnough = distance < 6.0;     // within ~6 units
+            const closeEnough = distance < 5.0;     // within ~6 units
             const lookingAt = facingDot > 0.92;     // looking roughly toward it
 
             if (closeEnough && lookingAt) {
@@ -223,13 +224,17 @@ export class RiddlePuzzle extends THREE.Group{
         const LOCAL_Y_OFFSET = 3.03 - 3.2; // Result is -0.17
 
         this.paperMesh.position.set(
-            5, // Local X: 1.5m to the right of the machine's center
-            LOCAL_Y_OFFSET, // Local Y: -0.17 (Places it at world Y=3.03)
+            2, // Local X: 1.5m to the right of the machine's center
+            LOCAL_Y_OFFSET+0.1, // Local Y: -0.17 (Places it at world Y=3.03)
             0.0 // Local Z: Centered with the machine
         );
         this.paperMesh.rotation.x = -Math.PI / 2 ; // Lie flat on the table
         this.paperMesh.visible = true;
         this.paperDropped = true;
+
+        const paperWorldPos = new THREE.Vector3();
+    this.paperMesh.getWorldPosition(paperWorldPos);
+    console.log(`📜 Paper dropped at world position: (${paperWorldPos.x.toFixed(2)}, ${paperWorldPos.y.toFixed(2)}, ${paperWorldPos.z.toFixed(2)})`);
         
         return this.paperMesh;
     }
@@ -246,7 +251,7 @@ export class RiddlePuzzle extends THREE.Group{
             // TODO: GAME STATE CHANGE LOGIC GOES HERE ***
              if (!this.paperDropped) {
                 this.getDroppedPaper();
-                //this.deactivate(); 
+                this.deactivate(); 
                 //this.add(this.paperMesh); // Sets its position and sets this.paperDropped = true
 
                    // === NEW: LOG WORLD POSITION AFTER ADDING TO PARENT ===
@@ -270,9 +275,9 @@ export class RiddlePuzzle extends THREE.Group{
         if(this.isSolved && this.paperDropped){
             this.paperUI.style.display = 'block';
             //TODO: disable player controls here
-            if(this.player && this.player.controls){
-            this.player.controls.enabled = false
-        }
+            //if(this.player && this.player.controls){
+            //this.player.controls.enabled = false
+        //}
 
             return true;
         } 
@@ -283,9 +288,9 @@ export class RiddlePuzzle extends THREE.Group{
         if(!this.paperUI) return;
         this.paperUI.style.display = 'none';
         this.isUIVisible = false; // important to stop other loops reopening it
-        if(this.player && this.player.controls){
-            this.player.controls.enabled = true;
-        }
+        //if(this.player && this.player.controls){
+            //this.player.controls.enabled = true;
+        //}
     }
 
     //show the UI when player interacts
@@ -294,10 +299,10 @@ export class RiddlePuzzle extends THREE.Group{
             this.ui.show();
             this.isUIVisible=true;
             // TODO: Temporarily disable player movement/camera controls here
-            if(this.player && this.player.controls){
-                this.player.controls.enabled = false;
-                this.player.controls.lock()
-            }
+            //if(this.player && this.player.controls){
+                //this.player.controls.enabled = false;
+                //this.player.controls.lock()
+            //}
         }
     }
 
@@ -305,10 +310,10 @@ export class RiddlePuzzle extends THREE.Group{
         this.ui.hide();
         this.isUIVisible=false;
         // TODO: Re-enable player movement/camera controls here
-        if(this.player && this.player.controls){
-                this.player.controls.enabled = true;
-                this.player.controls.unlock()
-            }
+        //if(this.player && this.player.controls){
+                //this.player.controls.enabled = true;
+                //this.player.controls.unlock()
+            //}
     }
 
 
