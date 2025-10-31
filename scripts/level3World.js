@@ -7,6 +7,7 @@ import { Wall_Level3 } from './wall_level3';
 import { Floor_Level3 } from './floor_level3';
 import { ModelLoader } from './modelLoader';
 import { CombinationLockPuzzle } from './combinationLockPuzzle';
+import { TextureObject } from './textureObject';
 
 export class Level3_World {
     worldLoading = true;
@@ -61,10 +62,22 @@ export class Level3_World {
 
         this.setConbinationValues(this.combList,[2,1,5,5,8,3,9])
         
+        this.textureObject = new TextureObject();
+        this.textureObject.createFramedDocument('./src/textures/puzzle.jpeg', 6, 4.5); 
+        this.textureObject.position.set(0, 8, 20.5); 
+        this.textureObject.rotation.y = Math.PI;
+        this.room.add(this.textureObject);
+
+        const puzzleLight = new THREE.PointLight(0xffffff, 1.2, 8, 1.5);
+        puzzleLight.position.set(0, 8, 19); 
+        this.room.add(puzzleLight);
+        
+
 
         this.collidables = [
             { mesh: this.room.floor, type: 'floor' },
             { mesh: this.room.ceiling, type: 'ceiling' },
+            { mesh: this.textureObject, type: 'wall' }, 
             this.combinationLock6,this.combinationLock5,this.combinationLock4,this.combinationLock3,this.combinationLock2,this.combinationLock1,this.combinationLock7,
             ...Object.values(this.room.walls).map(w => ({ mesh: w, type: 'wall' }))
         ];
@@ -231,9 +244,7 @@ export class Level3_World {
         
         // Wall lights - accent lighting on walls
         // Front wall lights
-        const wallLight1 = new THREE.PointLight(0xffaa66, 6.5, 15, 2);
-        wallLight1.position.set(0, 8, 20);
-        this.room.add(wallLight1);
+ 
         
         // Back wall lights
         const wallLight2 = new THREE.PointLight(0xffaa66, 6.5, 15, 2);
