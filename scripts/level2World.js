@@ -11,11 +11,31 @@ import { DailPuzzle } from './dail';
 import { Paper } from './level2_paper';
 
 
+
+//this are purely just helper functions to manage loading overlay
+const updateLoadingStatus = (message) => {
+    const statusElement = document.getElementById('loading-status');
+    if (statusElement) {
+        statusElement.textContent = message;
+    }
+};
+
+
+const toggleLoadingOverlay = (isVisible) => {
+    const overlayElement = document.getElementById('loading-overlay');
+    if (overlayElement) {
+        overlayElement.style.display = isVisible ? 'flex' : 'none'; 
+    }
+};
+
 export class Level2{
 
     worldLoading=true;
     LevelComplete=false;
     timeComplete=false;
+
+    // Background music
+    bgMusic = null;
     
     
 
@@ -67,6 +87,11 @@ setDials(dail1,dail2,v1,v2){
 
 
     async init(){
+
+         this.worldLoading = true;
+        toggleLoadingOverlay(true);
+        updateLoadingStatus("Initializing escape room world...");
+
         this.world = new worldBuilder();
         this.renderer = this.world.ititialiseRenderer();
         this.scene = this.world.initializeScene();   
@@ -140,6 +165,33 @@ setDials(dail1,dail2,v1,v2){
         this.kTable.loadKitchenTable(this.scene, this.collidables);
     
         this.player = new Player(this.scene, this.collidables);
+
+        // Load and set up background music
+    
+            const listener = new THREE.AudioListener();
+            this.player.camera.add( listener );
+            this.bgMusic = new THREE.Audio( listener );
+            const audioLoader = new THREE.AudioLoader();
+        
+            updateLoadingStatus("Loading the Room....");
+            // Use a Promise to ensure we wait for the audio to load
+            await new Promise(resolve => {
+                audioLoader.load( './src/textures/escape.mp3', ( buffer ) => {
+                this.bgMusic.setBuffer( buffer );
+                this.bgMusic.setLoop( true );
+                this.bgMusic.setVolume( 0.3 );
+                updateLoadingStatus("Music loaded. Finishing setup...");
+                resolve(); // Resolve the promise once loading is complete
+             },
+             ( progress ) => {
+            const percent = Math.round((progress.loaded / progress.total) * 100);
+            updateLoadingStatus(`Loading Room and Music: ${percent}%`);
+        },
+             );
+            });
+
+            this.worldLoading = false;
+            toggleLoadingOverlay(false);
     }  
 
 
@@ -162,11 +214,16 @@ setDials(dail1,dail2,v1,v2){
 
     startGame(){
         this.world.startAnimation(this.player,() => this.customGameLogic())
+
+         if(this.bgMusic && this.bgMusic.buffer && !this.bgMusic.isPlaying) {
+        this.bgMusic.play();
+        }
        }
 
     endGame(){
         //also the timer
         this.world.stopAnimation();
+        this.bgMusic.stop();
     }
 
      pauseGame(){
