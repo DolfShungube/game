@@ -2,11 +2,11 @@ import * as THREE from 'three';
 import { Room } from './room';
 import { worldBuilder } from './renderCommons';
 import { Player } from './player';
-import { Floor } from './floor';
 import { Ceiling } from './ceiling';
 import { Wall_Level3 } from './wall_level3';
 import { Floor_Level3 } from './floor_level3';
 import { ModelLoader } from './modelLoader';
+import { CombinationLockPuzzle } from './combinationLockPuzzle';
 
 export class Level3_World {
     worldLoading = true;
@@ -40,20 +40,39 @@ export class Level3_World {
         this.world = new worldBuilder(); 
         this.renderer = this.world.ititialiseRenderer();
         this.scene = this.world.initializeScene();
+        const combinationLockPuzzle= new CombinationLockPuzzle()
         
         // Create the base room
         this.room = new Room();
         this.room.generateBaseRoom();
+
+        this.L1=["A",'B','C','D','E','S','G','H','I','Y']
+
+        this.dialTexture= combinationLockPuzzle.letterTexture(this.L1)
+
+        this.combinationLock1= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combinationLock2= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combinationLock3= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combinationLock4= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combinationLock5= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combinationLock6= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combinationLock7= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
+        this.combList=[this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4,this.combinationLock5,this.combinationLock6,this.combinationLock7]
+
+        this.setConbinationValues(this.combList,[2,1,5,5,8,3,9])
         
-        // Set up collidables (walls, floor, ceiling)
+
         this.collidables = [
             { mesh: this.room.floor, type: 'floor' },
             { mesh: this.room.ceiling, type: 'ceiling' },
+            this.combinationLock6,this.combinationLock5,this.combinationLock4,this.combinationLock3,this.combinationLock2,this.combinationLock1,this.combinationLock7,
             ...Object.values(this.room.walls).map(w => ({ mesh: w, type: 'wall' }))
         ];
 
         // Initialize the modelloader
         this.modelLoader = new ModelLoader();
+
+
 
         // Initialize floor, wall, and ceiling texture loaders
         this.floor_level3 = new Floor_Level3();
@@ -64,6 +83,54 @@ export class Level3_World {
         this.floor_level3.loadAdvancedFloorTexture(this.room);
         this.wall_level3.loadAdvancedWallTexture(this.room);
         this.ceiling.loadCeilingTexture(this.room, './src/textures/ceiling_1.jpg');
+
+
+
+        
+        this.combinationLock1.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock1.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock1.mesh.position.set(22.1,6,-3.5)
+        this.combinationLock1.unlocked=true
+
+        this.combinationLock3.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock3.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock3.mesh.position.set(22.1,6,-4.5)
+        this.combinationLock3.unlocked=true
+
+        this.combinationLock4.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock4.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock4.mesh.position.set(22.1,6,-5.5)
+        this.combinationLock4.unlocked=true
+
+        this.combinationLock2.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock2.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock2.mesh.position.set(22.1,6,3.5)
+        this.combinationLock2.unlocked=true
+
+        this.combinationLock5.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock5.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock5.mesh.position.set(22.1,6,4.5)
+        this.combinationLock5.unlocked=true
+
+        this.combinationLock6.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock6.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock6.mesh.position.set(22.1,6,5.5)
+        this.combinationLock6.unlocked=true 
+
+        this.combinationLock7.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock7.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock7.mesh.position.set(22.1,6,6.5)
+        this.combinationLock7.unlocked=true
+        
+        
+
+        this.room.add(this.combinationLock1.mesh)
+        this.room.add(this.combinationLock2.mesh)
+        this.room.add(this.combinationLock3.mesh)
+        this.room.add(this.combinationLock4.mesh)
+        this.room.add(this.combinationLock5.mesh)
+        this.room.add(this.combinationLock6.mesh)
+        this.room.add(this.combinationLock7.mesh)
 
         // Loading models
         this.Table = this.modelLoader.loadModel(
@@ -92,6 +159,11 @@ export class Level3_World {
             { x: 0, y: Math.PI / 2, z: 0 },
             'Board'
         );
+        const L=[this.Table,this.Board]
+
+        for(let i=0;i<L.length;i++){
+            this.collidables.push({mesh:L[i],type:"wall"})
+        }
 
         this.ceiling_light = this.modelLoader.loadModel(
             this.scene,
@@ -110,7 +182,7 @@ export class Level3_World {
         ceilingLightSource.shadow.mapSize.height = 1024;
         this.room.add(ceilingLightSource);
 
-        // Optional: Add a second ceiling light on the other side for symmetry
+
         this.ceiling_light2 = this.modelLoader.loadModel(
             this.scene,
             './models/level3/ceiling_light.glb',
@@ -173,12 +245,12 @@ export class Level3_World {
         wallLight3.position.set(-20, 8, 0);
         this.room.add(wallLight3);
         
-        // Right wall lights
+
         const wallLight4 = new THREE.PointLight(0xffaa66, 6.5, 15, 2);
         wallLight4.position.set(20, 8, 0);
         this.room.add(wallLight4);
         
-        // Additional corner accent lights for better coverage
+
         const cornerLight1 = new THREE.PointLight(0xff8844, 6.5, 12, 2);
         cornerLight1.position.set(-15, 6, 15);
         this.room.add(cornerLight1);
@@ -195,25 +267,61 @@ export class Level3_World {
         cornerLight4.position.set(15, 6, -15);
         this.room.add(cornerLight4);
         
-        // Optional: Add subtle fog for atmospheric effect
         this.scene.fog = new THREE.Fog(0x0a0a0a, 25, 55);
 
         // Add room to scene
         this.scene.add(this.room);
         
-        // Initialize player
         this.player = new Player(this.scene, this.collidables);
         this.player.controls.enabled = false;
     }
 
-    customGameLogic() {
-        // Empty for now - add your Level 3 specific game logic here
+    customGameLogic(){
+
+        this.allCombinationsSolved(this.combList)
+        this.gameState()
+       
     }
 
-    levelCompleteAction() {
-        // Add level completion logic here
-        console.log('Level 3 Complete!');
+setConbinationValues(combinationList,values){
+
+    for (let i=0; i<combinationList.length;i++){
+      combinationList[i].solutionNumber= values[i]
     }
+}
+
+    gameState(){
+        if(this.LevelComplete){
+            return "pass"
+        }
+
+        else if(this.timeComplete){
+
+            return "fail"
+
+        }
+
+        return "progress"
+    }
+
+
+allCombinationsSolved(combinationList){
+
+  let allSolved=true
+
+  for(let i=0;i<combinationList.length;i++){
+
+      if(!combinationList[i].solved){
+        allSolved=false
+        break;
+
+      }
+  }
+
+  if(allSolved){
+    this.gameLevelComplete=true;
+  }
+}
 
     startGame() {
         if (this.world && this.player) {

@@ -36,6 +36,7 @@ export class worldBuilder extends THREE.Group{
     startAnimation(player,LevelLogic = null){
 
         this.initTimer()
+        this.Player=player
         this.remainingTime= this.worldTimer
         
 
@@ -44,7 +45,7 @@ export class worldBuilder extends THREE.Group{
         let prevTime = performance.now();
         this.isAnimating=true
         this.pause=false
-        this.lastTimerUpdate = prevTime;
+       this.lastTimerUpdate = prevTime;
         this.createTimerOverlay();
 
 
@@ -79,6 +80,7 @@ stopAnimation(){
     this.isAnimating=false;
     this.removeTimerOverlay();
     if (this.animationId) {
+        this.Player.removeReticle()
         cancelAnimationFrame(this.animationId);
         this.animationId = null;
         

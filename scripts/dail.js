@@ -13,7 +13,7 @@ createDail(){
 
     const dialGroup = new THREE.Group();
 
-    const baseGeometry = new THREE.CylinderGeometry(1, 1, 0.1, 64);
+    const baseGeometry = new THREE.CylinderGeometry(0.9, 0.9, 0.1, 64);
     const baseMaterial = new THREE.MeshStandardMaterial({ 
         color: 0x2c3e50,
         metalness: 0.5,
@@ -30,9 +30,9 @@ for (let i = 0; i < 90; i += 10) {
         
         const isMain = i % 20 === 0;
         const tickGeometry = new THREE.BoxGeometry(
-            0.03, 
-            isMain ? 0.2 : 0.1, 
-            0.05
+            0.02, 
+            isMain ? 0.1 : 0.05, 
+            0.03
         );
         const tickMaterial = new THREE.MeshStandardMaterial({ 
             color: isMain ? 0xffffff : 0x888888 
@@ -90,7 +90,7 @@ for (let i = 0; i < 90; i += 10) {
     needle.position.y = 0.35;
     needleGroup.add(needle);
     
-    const capGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 32);
+    const capGeometry = new THREE.CylinderGeometry(0.6, 0.6, 0.4, 32);
     const capMaterial = new THREE.MeshStandardMaterial({ 
         color: 0x444444,
         metalness: 0.8,
@@ -135,6 +135,12 @@ createBaseDail(){
         solved:false,
         targetValue:75,
         tolerance:1,
+        onFocus: function(){
+
+        },
+        onUnFocus: function(){
+
+        },
         onInteract: function(dt, player, input){
             if (input.right) {
                 this.state.value -= this.state.rotationSpeed * dt;

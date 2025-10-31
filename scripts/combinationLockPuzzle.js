@@ -9,7 +9,7 @@ constructor(){
 
 }
 
-createCombinationLock(textureArray=this.baseTexture()){
+createCombinationLock(textureArray){
 
 
     const wheelFrame = this.createFrame(1,0.7)
@@ -85,9 +85,9 @@ createCombinationLock(textureArray=this.baseTexture()){
 }
 
 
-createBaseCombinationLock(){
+createBaseCombinationLock(textureArray=this.baseTexture()){
 
-    const lockData = this.createCombinationLock();
+    const lockData = this.createCombinationLock(textureArray);
     const lock = {
         mesh: lockData.mesh,
         wheel: lockData.wheel,
@@ -238,6 +238,34 @@ baseTexture(){
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(i.toString(), 64, 64);
+        const texture = new THREE.CanvasTexture(canvas);
+        textureArray.push(texture)
+        }
+
+        return textureArray
+
+
+}
+
+letterTexture(textureArray1){
+    //let L=["A",'B','C','D','E','F','G','H','I','J']
+
+        let textureArray=[]
+
+        for (let i = 0; i < 10; i++) {
+
+
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const context = canvas.getContext('2d');
+        
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 80px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(textureArray1[i].toString(), 64, 64);
         const texture = new THREE.CanvasTexture(canvas);
         textureArray.push(texture)
         }

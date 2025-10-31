@@ -1,7 +1,8 @@
 import { level1_World } from '../scripts/level1.js';
 import { Level1 } from '../scripts/level1World.js';
 import { level2_World } from '../scripts/level2.js';
-import { Level3_World } from '../scripts/level3.js';
+import { Level2 } from '../scripts/level2World.js';
+import { Level3_World } from '../scripts/level3World.js';
 
 // Store the current level instance globally
 let currentLevel = null;
@@ -49,17 +50,17 @@ async function startLevel(levelNum) {
             case 1:
                 currentLevel = new Level1();
                 await currentLevel.init();
-                setTimeout(() => { currentLevel.startGame() }, 1000);
+                currentLevel.startGame()
                 break;
             case 2:
-                currentLevel = level2_World?.();
+                currentLevel = new Level2();
+                await currentLevel.init();
+                currentLevel.startGame()
                 break;
             case 3:
-                // THIS IS THE FIX - instantiate with 'new' keyword
                 currentLevel = new Level3_World();
-                await currentLevel.init();
-                setTimeout(() => { currentLevel.startGame() }, 1000);
-                console.log('Level 3 started successfully');
+                currentLevel.init();
+                currentLevel.startGame()
                 break;
             default:
                 console.error('Invalid level number:', levelNum);

@@ -7,6 +7,9 @@ import { KFloor } from './kitchenFloor';
 import { KCeiling } from './kitchenCeiling';
 import { Ktable } from './kitchenTable';
 import { ModelLoader } from './modelLoader';
+import { DailPuzzle } from './dail';
+import { Paper } from './level2_paper';
+
 
 let gameLevelComplete = false;
 let gameTimer = 0;
@@ -25,13 +28,37 @@ export function level2_World() {
     const kFloor= new KFloor()
     const kCeiling= new KCeiling()
     const kTable= new Ktable()
+    const dailPuzzle = new DailPuzzle()
+    const clue= new Paper(1,2,'./src/textures/level2_paper.png')
+
+    const dail1= dailPuzzle.createBaseDail()
+    const dail2= dailPuzzle.createBaseDail()
+
+    dail1.targetValue=75
+    dail2.targetValue=21
     
 
     const collidables = [
         { mesh: room.floor, type: 'floor' },
         { mesh: room.ceiling, type: 'ceiling'},
+        dail1,dail2,
         ...Object.values(room.walls).map(w => ({ mesh: w, type: 'wall' }))
     ];
+
+
+
+
+    dail1.mesh.scale.set(0.2,0.2,0.2)
+    dail1.mesh.position.set(7.42,4.3,-10.4)
+    dail2.mesh.scale.set(0.2,0.2,0.2)
+    dail2.mesh.position.set(8.42,4.3,-10.4)
+    clue.mesh.position.set(-11.6,4,-1)
+    clue.mesh.rotation.y= Math.PI/2
+
+
+    room.add(dail1.mesh)
+    room.add(dail2.mesh)
+    room.add(clue.mesh)
 
 
 
@@ -46,6 +73,12 @@ const painting = modelLoader.loadModel(scene,'./models/painting.glb',{ x: -13.5,
 const clock = modelLoader.loadModel(scene,'./models/clock.glb',
   { x: 0, y: 9, z: -14 }, 3.5, 0);
 
+const obj=[stove,top,microwave,fridge,sink,trashCan,painting,clock]
+
+for(let i=0;i<obj.length;i++){
+    collidables.push({mesh:obj[i],type:"wall"})
+}
+
     kFloor.loadFloorTexture(room, './src/textures/floor_level_2/textures/floor_tiles_06_diff_4k.jpg');
     kWall.loadWallTexture(room, './src/textures/wall_plaster_level_2/textures/Texturelabs_Fabric_180XL.jpg');
     kCeiling.loadCeilingTexture(room, './src/textures/wall_plaster_level_2/textures/Texturelabs_Brick_132L.jpg');
@@ -56,7 +89,35 @@ const clock = modelLoader.loadModel(scene,'./models/clock.glb',
 
     const player = new Player(scene, collidables);
 
-    world.startAnimation(player);
+    function setDials(dail1,dail2,v1,v2){
+        dail1.targetValue=v1
+        dail2.targetValue=v2
+
+    }
+
+    function checkComplete(dail1,dail2){
+        if(dail1.solved && dail2.solved){
+
+            
+
+            return true
+
+        }
+        return false
+
+
+    }
+
+
+setDials(dail1,dail2,75,21)
+function customGameLogic(){
+
+    checkComplete(dail1,dail2)
+
+
+}    
+
+    world.startAnimation(player,customGameLogic);
     
 
 }

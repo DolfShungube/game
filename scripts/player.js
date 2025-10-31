@@ -71,6 +71,11 @@ raycaster = new THREE.Raycaster();
     document.addEventListener("keyup", this.onKeyUp.bind(this));
   }
 
+removeReticle(){
+      const ret = document.getElementById("reticle");
+    if (ret) ret.remove();
+}
+
 
 applyInputs(dt){
   if (!this.controls.isLocked || this.isFocusing) return;
