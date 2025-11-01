@@ -17,6 +17,8 @@ import { Floor } from './floor';
 import { Ceiling } from './ceiling';
 import { Wall } from './wall';
 import { ModelLoader } from './modelLoader';
+import { TallyMarks } from './tallyMarks';
+
 
 
 //this are purely just helper functions to manage loading overlay
@@ -157,6 +159,7 @@ export class Level1{
     this.floor= new Floor()
     this.wall= new Wall()
     this.ceiling= new Ceiling()
+    this.tallyMarks = new TallyMarks();
     
 
 
@@ -327,7 +330,18 @@ export class Level1{
 
     this.combinationLock4.mesh.rotation.z = Math.PI/2;
     this.combinationLock4.mesh.rotation.y = -Math.PI;
-    this.combinationLock4.mesh.position.set(2.5,6,22.1)
+    this.combinationLock4.mesh.position.set(2.5,6,22.1);
+
+
+    const tally1 = this.tallyMarks.createTallyMarks({ x: -20.9, y: 13, z: 18.5 }, Math.PI / 2, 2);
+    const tally2 = this.tallyMarks.createTallyMarks({ x: 20.9, y: 13, z: -18.5 }, -Math.PI / 2, 4);
+    const tally3 = this.tallyMarks.createTallyMarks({ x: 18.5, y: 13, z: 20.9 }, Math.PI, 3);
+    const tally4 = this.tallyMarks.createTallyMarks({ x: -18.5, y: 13, z: -19.9 }, 0, 5);
+
+    this.room.add(tally1);
+    this.room.add(tally2);
+    this.room.add(tally3);
+    this.room.add(tally4);
 
 
     this.room.addItem(this.clock.mesh)
