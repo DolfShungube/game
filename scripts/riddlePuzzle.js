@@ -4,7 +4,7 @@ import { TextureLoader } from 'three';
  
 
 const loader = new TextureLoader();
-const PAPER_TEXTURE_PATH = '../src/textures/tx1.png'; // Path to your paper texture image
+const PAPER_TEXTURE_PATH = '../src/textures/tx3.webp'; // Path to your paper texture image
 export class RiddlePuzzle extends THREE.Group{
     constructor(riddleText,correctAnswer, position = new THREE.Vector3(-37.0, 3.2, -36.0)){
         super();
@@ -58,15 +58,15 @@ export class RiddlePuzzle extends THREE.Group{
 
         document.addEventListener('keydown',(event)=>{
             const key = event.key.toLowerCase();
-            if(!this.isTargeted && key === 'e') return;
+            if(!this.isTargeted && event.code==player.Setcontrols.interact) return;
 
-            if(key === 'e' && !this.isUIVisible){
+            if(event.code==player.Setcontrols.interact && !this.isUIVisible){
                 this.activate();
             }
             if(this.paperUI && this.paperUI.style.display === 'block'){
                 this.hidePaper(); // hides paper
             }
-            else if(key === 'escape' && this.isUIVisible){
+            else if(event.code=== player.Setcontrols.exitInteract && this.isUIVisible){
                 this.deactivate();
                 //this.hidePaper(); //I am thinking maybe is for hiding the paperUI
 
@@ -75,9 +75,13 @@ export class RiddlePuzzle extends THREE.Group{
 
         //mouse clicks for paper
 
-        document.addEventListener('click', (event) => {
+        document.addEventListener('keydown', (event) => {
             // don’t trigger while UI is open
+            if(event.code==player.Setcontrols.interact){
+
             if (this.isUIVisible) return;
+
+
 
             const cameraPos = this.camera.position;
             const cameraDir = new THREE.Vector3();
@@ -105,6 +109,7 @@ export class RiddlePuzzle extends THREE.Group{
             } else {
                 console.log("Click ignored (too far or not looking at paper).");
             }
+        }
         });
 
     }
@@ -151,8 +156,7 @@ export class RiddlePuzzle extends THREE.Group{
             display: none; /* Starts hidden */
         `;
         
-        // Use an arrow function for the inline click handler to ensure 'this' refers to the class instance if needed, 
-        // but here we just hide the element.
+
         div.innerHTML = `
             <h2>Paper Note</h2>
             <p>${this.paperContent}</p>
@@ -217,16 +221,13 @@ export class RiddlePuzzle extends THREE.Group{
         getDroppedPaper(){
         if(this.paperDropped) return this.paperMesh;
 
-        // Global Y position of the tabletop surface (3.0 - 0.1/2 = 2.95m).
-        //const localYOnTable = -0.25 + 0.03;
-        
-        // RiddlePuzzle is at Y=3.2. Table surface (Y=3.0) + Z-fight offset (0.03) = 3.03.
+
         const LOCAL_Y_OFFSET = 3.03 - 3.2; // Result is -0.17
 
         this.paperMesh.position.set(
-            2, // Local X: 1.5m to the right of the machine's center
-            LOCAL_Y_OFFSET+0.1, // Local Y: -0.17 (Places it at world Y=3.03)
-            0.0 // Local Z: Centered with the machine
+            2,
+            LOCAL_Y_OFFSET+0.1,
+            0.0
         );
         this.paperMesh.rotation.x = -Math.PI / 2 ; // Lie flat on the table
         this.paperMesh.visible = true;
@@ -248,13 +249,10 @@ export class RiddlePuzzle extends THREE.Group{
             this.isSolved=true;
             this.ui.setMessage("SUCCESS! The riddle is solved.Check the table!", 'green');
 
-            // TODO: GAME STATE CHANGE LOGIC GOES HERE ***
              if (!this.paperDropped) {
                 this.getDroppedPaper();
                 this.deactivate(); 
-                //this.add(this.paperMesh); // Sets its position and sets this.paperDropped = true
 
-                   // === NEW: LOG WORLD POSITION AFTER ADDING TO PARENT ===
                 const worldPos = new THREE.Vector3();
                 this.paperMesh.getWorldPosition(worldPos);
                 console.log("Paper Dropped at World Position:", worldPos.toArray());

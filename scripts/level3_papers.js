@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 
 export class MultiplePapers extends THREE.Group {
-  constructor(texturePath, noteText, position = new THREE.Vector3(0, 3, 0)) {
+  constructor(texturePath, noteText, position = new THREE.Vector3(0, 3, 0),page="1") {
     super();
+    this.page=page
     this.name = 'InteractivePaper';
     this.noteText = noteText;
     this.texturePath = texturePath;
@@ -60,7 +61,7 @@ export class MultiplePapers extends THREE.Group {
       display: none;
     `;
     div.innerHTML = `
-      <h2>Note</h2>
+      <h2>Note ${this.page}</h2>
       <p>${this.noteText}</p>
       
     `;
@@ -73,7 +74,10 @@ export class MultiplePapers extends THREE.Group {
     this.camera = camera;
     this.player = player;
 
-    document.addEventListener('click', (event) => {
+    document.addEventListener('keydown', (event) => {
+
+      if(event.code==player.Setcontrols.interact){
+
       if (this.isUIVisible) return;
 
       const cameraPos = this.camera.position.clone();
@@ -93,13 +97,16 @@ export class MultiplePapers extends THREE.Group {
       if (closeEnough && lookingAt) {
         this.showPaper();
       }
+    }
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key.toLowerCase() === 'escape' && this.isUIVisible) {
+      if (event.code=== player.Setcontrols.exitInteract && this.isUIVisible) {
         this.hidePaper();
       }
     });
+
+  
   }
 
   showPaper() {

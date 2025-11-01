@@ -89,46 +89,72 @@ export class Level3_World {
         this.setConbinationValues(this.combList,[2,0,5,5,8,3,9])
 
         //the notes in the level
-        this.note1 = new MultiplePapers('../src/textures/tx1.png', 
-        "I counted 52 steps from the mirror to the door. But when I turned back… there were only 51. Someone walked the last one for me.", 
-        new THREE.Vector3(-5, 5, -5) 
+        this.note1 = new MultiplePapers('../src/textures/tx3.webp', 
+        "I counted 52, but I am sure there were more of us.", 
+        new THREE.Vector3(-5, 5, -5),"1"
         );
-        this.note2 = new MultiplePapers('../src/textures/tx1.png', 
-        "The candles burned for 39 minutes. Then the air grew cold — and the flame bent toward the vent. She’s still breathing in there.", 
-        new THREE.Vector3(-3, 5, -7)
+        this.note2 = new MultiplePapers('../src/textures/tx3.webp', 
+        "I think it has been 39 minutes and some of us think somthing is wrong.", 
+        new THREE.Vector3(-3, 5, -7),"2"
         );
         
-        this.note3 = new MultiplePapers('../src/textures/tx1.png', 
-        "Drawer 15… it won’t open. Blood under the handle, like someone tried. Perhaps they found what they shouldn’t.", 
-        new THREE.Vector3(-1, 5, 1)
+        this.note3 = new MultiplePapers('../src/textures/tx3.webp', 
+        "Only 15 of us remain.", 
+        new THREE.Vector3(-1, 5, 1),"3"
         );
-        this.note4 = new MultiplePapers('../src/textures/tx1.png', 
-        "72 seconds of light, then darkness again. The generator hums like a heartbeat. I think it knows when I’m watching.", 
-        new THREE.Vector3(2, 5, 1)
+        this.note4 = new MultiplePapers('../src/textures/tx3.webp', 
+        "First we were 72.", 
+        new THREE.Vector3(2, 5, 1),"4"
         );
-        this.note5 = new MultiplePapers('../src/textures/tx1.png', 
-        "The clocks stopped at 9 and 3. Both point to where she hid the key, but only one tells the truth.", 
-        new THREE.Vector3(5, 5, 1)
+        this.note5 = new MultiplePapers('../src/textures/tx3.webp', 
+        "9 went missing again,3 of them were close to me.", 
+        new THREE.Vector3(5, 5, 1),"5"
         );
-        this.note6 = new MultiplePapers('../src/textures/tx1.png', 
-        "Rooms 10 and 11 are connected… but not by doors. The wall hums if you listen closely. Something moves between them.", 
-        new THREE.Vector3(8, 5, 1)
+        this.note6 = new MultiplePapers('../src/textures/tx3.webp', 
+        "10 or 11, I can't hear clearly.", 
+        new THREE.Vector3(8, 5, 1),"6"
         );
-        this.note7 = new MultiplePapers('../src/textures/tx1.png', 
-        "Between 8 and 11 — that’s where it happened. The screams stopped, the scratching didn’t. Don’t open it again.", 
-        new THREE.Vector3(10, 5, 1)
+        this.note7 = new MultiplePapers('../src/textures/tx3.webp', 
+        "I heard 8 of them I think, or maybe it was 11 but I could tell they were all different.", 
+        new THREE.Vector3(10, 5, 1),"8"
         );
-        this.note8 = new MultiplePapers('../src/textures/tx1.png', 
-        "Page 8 is torn out. That’s where the real message was. The rest is just a distraction.", 
-        new THREE.Vector3(13, 5, 1)
+        this.note8 = new MultiplePapers('../src/textures/tx3.webp', 
+        "I will write it down next time", 
+        new THREE.Vector3(13, 5, 1),"7"
         );
 
 
+        this.note1.position.set(-21,7,4)
+        this.note1.rotation.z=-Math.PI/2
+        this.note1.rotation.x=Math.PI/2
 
+        this.note2.position.set(-21,7,5)
+        this.note2.rotation.z=-Math.PI/2
+        this.note2.rotation.x=Math.PI/2
 
+        this.note3.position.set(-21,5.4,6)
+        this.note3.rotation.z=-Math.PI/2
+        this.note3.rotation.x=Math.PI/2
 
-        
+        this.note4.position.set(-21,5.4,-1)
+        this.note4.rotation.z=-Math.PI/2
+        this.note4.rotation.x=Math.PI/2
 
+        this.note5.position.set(-21,7,1)
+        this.note5.rotation.z=-Math.PI/2
+        this.note5.rotation.x=Math.PI/2
+
+        this.note6.position.set(-21,5.4,3)
+        this.note6.rotation.z=-Math.PI/2
+        this.note6.rotation.x=Math.PI/2
+
+        this.note7.position.set(-21,7,-3)
+        this.note7.rotation.z=-Math.PI/2
+        this.note7.rotation.x=Math.PI/2
+
+        this.note8.position.set(-21,5.4,-6)
+        this.note8.rotation.z=-Math.PI/2
+        this.note8.rotation.x=Math.PI/2
         this.collidables = [
             { mesh: this.room.floor, type: 'floor' },
             { mesh: this.room.ceiling, type: 'ceiling' },
