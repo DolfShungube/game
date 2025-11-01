@@ -86,7 +86,7 @@ export class Level3_World {
         this.combinationLock7= combinationLockPuzzle.createBaseCombinationLock(this.dialTexture);
         this.combList=[this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4,this.combinationLock5,this.combinationLock6,this.combinationLock7]
 
-        this.setConbinationValues(this.combList,[2,1,5,5,8,3,9])
+        this.setConbinationValues(this.combList,[2,0,5,5,8,3,9])
 
         //the notes in the level
         this.note1 = new MultiplePapers('../src/textures/tx1.png', 
@@ -122,6 +122,9 @@ export class Level3_World {
         "Page 8 is torn out. That’s where the real message was. The rest is just a distraction.", 
         new THREE.Vector3(13, 5, 1)
         );
+
+
+
 
 
         
@@ -160,25 +163,26 @@ export class Level3_World {
 
 
         
+
         this.combinationLock1.mesh.rotation.z = Math.PI / 2;
         this.combinationLock1.mesh.rotation.y = -Math.PI/2;
-        this.combinationLock1.mesh.position.set(22.1,6,-3.5)
+        this.combinationLock1.mesh.position.set(22.1,6,-5.5)
         this.combinationLock1.unlocked=true
+
+        this.combinationLock2.mesh.rotation.z = Math.PI / 2;
+        this.combinationLock2.mesh.rotation.y = -Math.PI/2;
+        this.combinationLock2.mesh.position.set(22.1,6,-4.5)
+        this.combinationLock2.unlocked=true
 
         this.combinationLock3.mesh.rotation.z = Math.PI / 2;
         this.combinationLock3.mesh.rotation.y = -Math.PI/2;
-        this.combinationLock3.mesh.position.set(22.1,6,-4.5)
+        this.combinationLock3.mesh.position.set(22.1,6,-3.5)
         this.combinationLock3.unlocked=true
 
         this.combinationLock4.mesh.rotation.z = Math.PI / 2;
         this.combinationLock4.mesh.rotation.y = -Math.PI/2;
-        this.combinationLock4.mesh.position.set(22.1,6,-5.5)
+        this.combinationLock4.mesh.position.set(22.1,6,3.5)
         this.combinationLock4.unlocked=true
-
-        this.combinationLock2.mesh.rotation.z = Math.PI / 2;
-        this.combinationLock2.mesh.rotation.y = -Math.PI/2;
-        this.combinationLock2.mesh.position.set(22.1,6,3.5)
-        this.combinationLock2.unlocked=true
 
         this.combinationLock5.mesh.rotation.z = Math.PI / 2;
         this.combinationLock5.mesh.rotation.y = -Math.PI/2;
@@ -426,6 +430,9 @@ setConbinationValues(combinationList,values){
 }
 
     gameState(){
+
+
+
         if(this.LevelComplete){
             return "pass"
         }
@@ -453,9 +460,7 @@ allCombinationsSolved(combinationList){
       }
   }
 
-  if(allSolved){
-    this.gameLevelComplete=true;
-  }
+  return allSolved
 }
 
     startGame() {
