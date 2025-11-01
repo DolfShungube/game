@@ -213,7 +213,11 @@ export class Level1{
 
 
 
+        const L=[this.couch1,this.couch2,this.coffeeTable,this.table_model,this.table_model_lamp]
 
+        for(let i=0;i<L.length;i++){
+            this.collidables.push({mesh:L[i],type:"wall"})
+        }
         
     this.keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
     this.fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
