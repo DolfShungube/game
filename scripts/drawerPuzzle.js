@@ -497,7 +497,7 @@ const lockMechanism={
             rotationSpeed:1.5
         },
         lockMechanism: lockMechanism,
-        toleratableVariation:0.2,
+        toleratableVariation:0.8,
        solutionAngle:0,
        solved:false,
        

@@ -265,7 +265,7 @@ clearSceneAndReturnToMenu() {
 
     if (app) app.innerHTML = '';
     if (menu) menu.style.display = 'block';
-    if (backButton) backButton.click() = true;
+    //if (backButton) backButton.click() = true;
 
     const oldCanvas =document.querySelector('canvas');
     if (oldCanvas) oldCanvas.remove();

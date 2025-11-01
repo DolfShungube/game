@@ -90,9 +90,7 @@ export class Level1{
         }
     }
 
-    if(allSolved){
-        this.LevelComplete=true;
-    }
+    return allSolved
     }
 
     gameState(){
@@ -400,7 +398,9 @@ export class Level1{
 
     this.buttonList=[this.button1,this.button2,this.button3,this.button4]
     this.combinationList=[this.combinationLock1,this.combinationLock2,this.combinationLock3,this.combinationLock4]
-    this.combinationValues=[1,2,3,4]
+    this.combinationValues=[1,1,1,1]
+
+
 
 
     this.worldLoading = false;
@@ -409,7 +409,12 @@ export class Level1{
     }  
 
  
-    
+       setConbinationValues(combinationList,values){
+
+    for (let i=0; i<combinationList.length;i++){
+      combinationList[i].solutionNumber= values[i]
+    }
+} 
 
     customGameLogic(){
         this.riddleMachine.updateInteraction();
@@ -429,6 +434,7 @@ export class Level1{
 
 
     startGame(){
+        this.setConbinationValues(this.combinationList,this.combinationValues)
         this.world.startAnimation(this.player,() => this.customGameLogic())
         
         if(this.bgMusic && this.bgMusic.buffer && !this.bgMusic.isPlaying) {
