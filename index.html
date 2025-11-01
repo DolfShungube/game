@@ -190,22 +190,74 @@
 
     <!-- ABOUT POPUP -->
     <div id="about-popup" class="popup">
-      <h2>About</h2>
-      <p>
-        Welcome to <strong>Mystery Room</strong> — an immersive 3D escape game built with
-        <em>Three.js</em> where you’ll solve puzzles, uncover secrets, and test your logic to escape each level.
-      </p>
+      <h2>How to play</h2>
+      <h4>Controls</h4>
+      <ul> 
+        <li>Movement Controls:, the following keys are used for movement, <strong>W</strong>,<strong>A</strong>,<strong>Z</strong>,<strong>D</strong>.</li>
+        <li>Interact: the world offer's a collection of objects the player can interect with, Use <strong>E </strong>to interect with something.</li>
+        <li>Exit Interact:<strong>Space</strong> Is used to exit interact mode,giving normal controls back to the Player.</li>
+        <li>Jump:<strong>Space</strong> if not interacting with something, jumping is used to get off high surfaces.</li>
+       
+        <li>Puzzle controls:,the following keys are used to manipulate intaractable objects, <strong>W</strong>,<strong>A</strong>,<strong>Z</strong>,<strong>D</strong>.</li>
+        <li>When on interect mode normal Player controls are disabled until you exit interact mode.</li>
+      </ul>
+
+      <h4>Spoilers !!</h4>
+      <ul>
+        <button id="l1btn">Level 1</button>
+        <div id="l1" class="popup">
+          <h2>Level 1 solution</h2>
+          <li>Solve the riddle michine, answer Map</li>
+          <li>Set the clock to the time specified in the note resulting from the riddle machine</li>
+          <li>the above two steps unlock the bottom section of the drawer, open it to press the button inside</li>
+          <li>The Top drawer section is opened by finding each of the 4 machanisms controlling the locks of it and turning them such that the lock opened part alines with the corner the lock in</li>
+          <li>Press the Top drawer buttton</li>
+          <li>Find all 4 buttons in the room to unlock all the dials</li>
+          <li>The value of each dial can be found by tally marks on each wall, a dail takes the value wall it would point to if all the dials were moved from the wall and layed flat on the floor </li>
+           <button onclick="closePopup('l1')">Close</button>
+        </div>
+        <button id="l2btn">Level 2</button>
+        <div id="l2" class="popup">
+          <h2>Level 2 solution</h2>
+          <li>Player should use the note on the fridge to deduce the values he oven dials should take</li>
+          <li>Player should notice that the symbols on the note follws a stucture similar to english writting</li>
+          <li>With deduction, starting from the two symbol line and the game invironment, the results of the deduction should lend the player to the sentence, "pause! turn on oven vii ii ii i"</li>
+          <li>The above tells the user to turn one dail to 75 and the other to 21</li>
+          <li>Set the dials to 75 and 21 to solve</li>
+           <button onclick="closePopup('l2')">Close</button>
+        </div>
+          <button id="l3btn">Level 3</button>
+        <div id="l3" class="popup">
+          <h2>Level 3 solution</h2>
+          <li>Player should use the notes in the room to deduce each value on the combination lock</li>
+          <li>Each note mentions a single number or 2 numbers</li>
+          <li>The player should treat the number as representing x-y coordinates,single numbers like 11 represents (1,1), if 2 numbers are mentioned like 11 and 12 treat first number as x and the second as y,(11,12)</li>
+          <li>Use the coordinates to read value from the scrambled letters</li>
+          <li>Listing the letters in order of note number shows the final answer, "CASSIDY"</li>
+          <li>Set each combination lock ring to a corresponding letter to solve the puzzle</li>
+          <button onclick="closePopup('l3')">Close</button>
+        </div>
+
+      </ul>
       <button onclick="closePopup('about-popup')">Close</button>
     </div>
 
     <!-- CREDITS POPUP -->
     <div id="credits-popup" class="popup">
       <h2>Credits</h2>
-      <p>
-        Developed by <strong>Mashego Gideon Mabeloane</strong>.<br />
-        3D Rendering powered by <strong>Three.js</strong>.<br />
-        Game Logic, Design, and Puzzles handcrafted with care. 🎮
-      </p>
+      <h3>Developers</h3>
+      <ul>
+
+        <li>Dolf Shungube</li>
+        <li>Mashego Gideon Mabeloane</li>
+        <li>Joel Haggis</li>
+
+      </ul>
+      <h3>Extra</h3>
+      <ul>
+        <li>puzzles, insipired by the Room game series and the FNaf survival logbook</li>
+      </ul>
+  
       <button onclick="closePopup('credits-popup')">Close</button>
     </div>
 
@@ -215,6 +267,20 @@
       const aboutBtn = document.getElementById("about-btn");
       const creditsBtn = document.getElementById("credits-btn");
 
+      const b1=document.getElementById("l1btn");
+            b1.addEventListener("click", () => {
+        document.getElementById("l1").style.display = "block";
+      });
+      
+      const b2=document.getElementById("l2btn");
+            b2.addEventListener("click", () => {
+        document.getElementById("l2").style.display = "block";
+      });
+      const b3=document.getElementById("l3btn");
+            b3.addEventListener("click", () => {
+        document.getElementById("l3").style.display = "block";
+      });
+            
       aboutBtn.addEventListener("click", () => {
         document.getElementById("about-popup").style.display = "block";
       });
