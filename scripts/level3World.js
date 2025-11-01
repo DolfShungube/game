@@ -413,7 +413,7 @@ export class Level3_World {
 
     customGameLogic(){
        
-        this.allCombinationsSolved(this.combList)
+        this.world.levelComplete=this.allCombinationsSolved(this.combList)
         this.gameState()
        
     }

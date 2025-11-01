@@ -132,7 +132,8 @@ export class Level1{
     toggleLoadingOverlay(true);
     updateLoadingStatus("Initializing escape room world...");
 
-    this.world= new worldBuilder(); 
+    this.world= new worldBuilder();
+    this.world.currentLevel='level 1' 
     this.renderer = this.world.ititialiseRenderer();
     this.scene= this.world.initializeScene();
     this.room= new Room();
@@ -368,13 +369,10 @@ export class Level1{
     this.player = new Player(this.scene,this.collidables);
     this.player.controls.enabled=false;
     //const controls= new OrbitControls(this.player.camera,this.renderer.domElement)
-
-    
-    // FOR RIDDLE MACHINE INTERACTION
     this.riddleMachine.setupInteraction(this.player.camera, this.player);
     //---------------------------------
 
-    //background music
+
   
     const listener = new THREE.AudioListener();
     this.player.camera.add( listener );
@@ -417,16 +415,14 @@ export class Level1{
         this.riddleMachine.updateInteraction();
         this.linkDrawerToClock(this.clock,this.drawer2)
         this.linkButtonsToCombinationLock(this.buttonList,this.combinationList)
-        this.allCombinationsSolved(this.combinationList)
+        this.world.levelComplete=this.allCombinationsSolved(this.combinationList)
 
     }
 
 
     levelCompleteAction(){
-        // some html stuff to do when game is complete
-        // eg back to main menu
-        // show completion time
-        // show best time
+
+
     }
 
 

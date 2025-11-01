@@ -13,6 +13,7 @@ const menu = document.getElementById('menu-container');
 // Create a back button dynamically (so it's not in HTML)
 const backButton = document.createElement('button');
 backButton.textContent = '⬅ Back to Main Menu';
+backButton.id='backButton';
 backButton.style.position = 'absolute';
 backButton.style.top = '20px';
 backButton.style.left = '20px';
@@ -23,7 +24,7 @@ backButton.style.color = 'white';
 backButton.style.border = '2px solid white';
 backButton.style.borderRadius = '8px';
 backButton.style.cursor = 'pointer';
-backButton.style.display = 'none'; // hidden by default
+backButton.style.display = 'none'; 
 backButton.style.zIndex = '1000';
 document.body.appendChild(backButton);
 
@@ -75,15 +76,16 @@ function endLevel() {
     // Properly clean up the current level
     if (currentLevel && typeof currentLevel.endGame === 'function') {
         currentLevel.endGame();
+        
     }
     currentLevel = null;
     
-    // Reset app and return to menu
+
     app.innerHTML = '';
     menu.style.display = 'block';
     backButton.style.display = 'none';
     
-    // Optional: also clear the WebGL renderer (so GPU memory frees)
+
     const oldCanvas = document.querySelector('canvas');
     if (oldCanvas) oldCanvas.remove();
 }

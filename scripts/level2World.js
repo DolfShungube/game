@@ -197,7 +197,7 @@ setDials(dail1,dail2,v1,v2){
 
     customGameLogic(){
 
-        this.allDialSolved(this.dail1,this.dail2)
+        this.world.levelComplete=this.allDialSolved(this.dail1,this.dail2)
         this.gameState()
     }
 
