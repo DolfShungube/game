@@ -32,7 +32,7 @@ raycaster = new THREE.Raycaster();
     this.collidables=collidables;
     this.Setcontrols={forward:"KeyW",backward:"KeyZ",right:"KeyD",left:"KeyA",jump:"Space",interact:"KeyE",exitInteract:"Space"}
     this.interactionInput={forward:"false",backward:"false",right:"false",left:"false",action:"false",cancel:"false"}
-    this.camera.position.set(-1, this.height * 0.9, -1);
+    this.camera.position.set(-1, this.height * 0.9, -7);
     scene.add(this.camera);
 
 
@@ -110,7 +110,7 @@ applyInputs(dt){
   this.camera.position.y +=this.vy*dt;
 
   if(this.camera.position.y<0){
-    this.camera.position.set(-1, this.height * 0.9, -1);
+    this.camera.position.set(-1, this.height * 0.9, -7);
   }
 
   const groundHit=this.checkGround();

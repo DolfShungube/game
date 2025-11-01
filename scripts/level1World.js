@@ -18,6 +18,26 @@ import { Floor_Level3 } from "./floor_level3";
 import { Ceiling } from "./ceiling";
 import { Wall } from "./wall";
 import { ModelLoader } from "./modelLoader";
+import * as THREE from 'three';
+import { Room } from './room';
+import { worldBuilder } from './renderCommons';
+import { Player } from './player';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import { ClockPuzzle } from './clockPuzzle';
+import { DrawerPuzzle } from './drawerPuzzle';
+import {ButtonPuzzle } from './buttonPuzzle';
+import { CombinationLockPuzzle } from './combinationLockPuzzle';
+import { RiddlePuzzle } from './riddlePuzzle';
+import { table1 } from './table1';
+import { BookShelf } from './bookShelf';
+import { Couch } from './couch';
+import { Carpet } from './carpet';
+import { FirePlace } from './firePlace';
+import { Floor } from './floor';
+import { Ceiling } from './ceiling';
+import { Wall } from './wall';
+import { ModelLoader } from './modelLoader';
+import { TallyMarks } from './tallyMarks';
 
 //this are purely just helper functions to manage loading overlay
 const updateLoadingStatus = (message) => {
@@ -103,6 +123,7 @@ export class Level1 {
     this.scene = this.world.initializeScene();
     this.room = new Room();
     this.room.generateBaseRoom();
+
     this.collidables = [
       { mesh: this.room.floor, type: "floor" },
       { mesh: this.room.ceiling, type: "ceiling" },
@@ -169,6 +190,65 @@ export class Level1 {
       { x: 10, y: 0, z: 10 },
       -Math.PI
     );
+
+    this.collidables =[
+    { mesh: this.room.floor, type: 'floor'},
+    { mesh: this.room.ceiling, type: 'ceiling'},
+    ...Object.values(this.room.walls).map(w => ({ mesh: w, type: 'wall' }))
+
+]
+    
+
+    this.Table= new table1();
+    this.Bookshelf= new BookShelf()
+    this.Couch1 = new Couch()
+    this.Carpet1= new Carpet()
+    this.Fireplace= new FirePlace()
+    this.combinationLockPuzzle= new CombinationLockPuzzle()
+    this.modelLoader= new ModelLoader()
+    this.clockPuzzle= new ClockPuzzle();
+    this.drawerPuzzle= new DrawerPuzzle();
+    this.buttonPuzzle= new ButtonPuzzle();
+    this.floor= new Floor()
+    this.wall= new Wall()
+    this.ceiling= new Ceiling()
+    this.tallyMarks = new TallyMarks();
+    
+
+
+    this.floor.loadFloorTexture(this.room, './src/textures/floor_level1_(1).jpg');
+    this.wall.loadWallTexture(this.room, './src/textures/wall_4.jpg', 'all');
+    this.ceiling.loadCeilingTexture(this.room, './src/textures/ceiling_1.jpg');
+
+
+    this.clock=this.clockPuzzle.createBaseClock();
+
+    this.Basedrawer= this.drawerPuzzle.createBaseDrawer();
+    
+
+    this.drawer1= this.Basedrawer.drawer1;
+    this.drawer2= this.Basedrawer.drawer2;
+    this.drawer= this.Basedrawer.container;
+
+    this.lock1= this.Basedrawer.lock1;
+    this.lock2= this.Basedrawer.lock2;
+    this.lock3= this.Basedrawer.lock3;
+    this.lock4= this.Basedrawer.lock4;
+
+    this.button1=this.Basedrawer.button1;
+    this.button2= this.Basedrawer.button2;
+    this.button3= this.buttonPuzzle.createBaseButton();
+    this.button4= this.buttonPuzzle.createBaseButton();
+
+
+    this.combinationLock1= this.combinationLockPuzzle.createBaseCombinationLock();
+    this.combinationLock2= this.combinationLockPuzzle.createBaseCombinationLock();
+    this.combinationLock3= this.combinationLockPuzzle.createBaseCombinationLock();
+    this.combinationLock4= this.combinationLockPuzzle.createBaseCombinationLock();
+
+    this.couch1 = this.Couch1.createCouch(this.scene, {x: -10, y: 0, z: 10}, Math.PI / 2);
+    this.couch2 = this.Couch1.createCouch(this.scene, {x: 10, y: 0, z: 10}, -Math.PI);
+
 
     this.carpet = this.Carpet1.createCarpet();
     this.table = this.Table.createTable();
@@ -314,6 +394,21 @@ export class Level1 {
       0.2,
       1.2
     );
+
+
+        const L=[this.couch1,this.couch2,this.coffeeTable,this.table_model,this.table_model_lamp]
+
+        for(let i=0;i<L.length;i++){
+            this.collidables.push({mesh:L[i],type:"wall"})
+        }
+        
+    this.keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    this.fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    this.rimLight = new THREE.DirectionalLight(0xffffff, 0.4);
+    this.world.addBaseLighting()
+    
+    this.bookshelfSpotlight1 = new THREE.SpotLight(0xffffff, 2.5, 30, Math.PI / 4, 0.2, 1.2);
     this.bookshelfSpotlight1.position.set(1, 15, 15);
     this.bookshelfSpotlight1.target.position.set(-12, 5, 20);
 
@@ -424,7 +519,22 @@ export class Level1 {
 
     this.combinationLock4.mesh.rotation.z = Math.PI / 2;
     this.combinationLock4.mesh.rotation.y = -Math.PI;
+
     this.combinationLock4.mesh.position.set(2.5, 6, 22.1);
+
+    
+
+
+    const tally1 = this.tallyMarks.createTallyMarks({ x: -20.9, y: 13, z: 18.5 }, Math.PI / 2, 2);
+    const tally2 = this.tallyMarks.createTallyMarks({ x: 20.9, y: 13, z: -18.5 }, -Math.PI / 2, 4);
+    const tally3 = this.tallyMarks.createTallyMarks({ x: 18.5, y: 13, z: 20.9 }, Math.PI, 3);
+    const tally4 = this.tallyMarks.createTallyMarks({ x: -18.5, y: 13, z: -19.9 }, 0, 5);
+
+    this.room.add(tally1);
+    this.room.add(tally2);
+    this.room.add(tally3);
+    this.room.add(tally4);
+
 
     this.room.addItem(this.clock.mesh);
     this.room.add(this.drawer.mesh);
