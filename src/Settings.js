@@ -56,11 +56,16 @@ export class Settings {
     const panel = document.createElement('div');
     panel.id = 'settings-panel';
     panel.className = 'popup';
+    panel.style.cssText = `
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px;
+    `;
     panel.innerHTML = `
       <h2>Controls Settings</h2>
       <p style="color: #aaa; margin-bottom: 20px;">Click a button to change its key binding</p>
-      <div id="control-bindings" style="display: flex; flex-direction: column; gap: 12px;"></div>
-      <div style="margin-top: 25px; display: flex; gap: 10px; justify-content: center;">
+      <div id="control-bindings" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;"></div>
+      <div style="display: flex; gap: 10px; justify-content: center; padding-bottom: 10px;">
         <button id="reset-controls" style="
           padding: 10px 20px;
           background: #ff4444;
