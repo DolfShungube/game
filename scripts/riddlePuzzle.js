@@ -104,10 +104,10 @@ export class RiddlePuzzle extends THREE.Group{
             const lookingAt = facingDot > 0.92;     // looking roughly toward it
 
             if (closeEnough && lookingAt) {
-                console.log("Player clicked near the paper area — showing paper UI!");
+
                 this.showPaper();
             } else {
-                console.log("Click ignored (too far or not looking at paper).");
+
             }
         }
         });
@@ -121,7 +121,7 @@ export class RiddlePuzzle extends THREE.Group{
         this.raycaster.setFromCamera({ x: 0, y: 0 }, this.camera); // center of screen
         const intersects = this.raycaster.intersectObject(this.interactiveMesh,true);
 
-        console.log('intersects', intersects.length);
+
 
 
         if ( !this.isSolved && intersects.length > 0  && !this.papeprDropped) {
@@ -261,7 +261,7 @@ export class RiddlePuzzle extends THREE.Group{
             }
           
             this.deactivate()
-            console.log("Riddle Solved!");
+
             return true;  
         }else{
             this.ui.setMessage("Incorrect answer. Try again.", 'red');
