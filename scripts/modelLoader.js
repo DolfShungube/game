@@ -38,7 +38,7 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
     
     function attemptLoad() {
         const currentPath = paths[currentPathIndex];
-        console.log(`Trying ${name} path ${currentPathIndex + 1}/${paths.length}: ${currentPath}`);
+
         
         loader.load(
             currentPath,
@@ -51,11 +51,7 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
                 // Apply scale
                 model.scale.set(scale, scale, scale);
                 
-                // Log model info
-                console.log(`${name} info:`, {
-                    children: model.children.length,
-                    scale: model.scale
-                });
+
                 
                 // Enable shadows and materials
                 model.traverse((child) => {
@@ -71,8 +67,7 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
                                 metalness: 0.0
                             });
                         }
-                        
-                        console.log(`  - Mesh:`, child.name || 'unnamed', 'has material:', !!child.material);
+                     
                     }
                 });
                 

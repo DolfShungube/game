@@ -104,14 +104,7 @@ export class Level1 {
     this.renderer = this.world.ititialiseRenderer();
     this.scene = this.world.initializeScene();
     this.room = new Room();
-    this.room.generateBaseRoom();
-
-    this.collidables = [
-      { mesh: this.room.floor, type: "floor" },
-      { mesh: this.room.ceiling, type: "ceiling" },
-      ...Object.values(this.room.walls).map((w) => ({ mesh: w, type: "wall" })),
-    ];
-
+    this.room.generateBaseRoom()
     this.Table = new table1();
     this.Bookshelf = new BookShelf();
     this.Couch1 = new Couch();
@@ -122,10 +115,21 @@ export class Level1 {
     this.clockPuzzle = new ClockPuzzle();
     this.drawerPuzzle = new DrawerPuzzle();
     this.buttonPuzzle = new ButtonPuzzle();
-    // this.floor = new Floor();
-    this.floor_level3 = new Floor_Level3();
+    this.floor = new Floor();
     this.wall = new Wall();
     this.ceiling = new Ceiling();
+    this.tallyMarks = new TallyMarks();
+    this.floor_level3 = new Floor_Level3();;
+
+    this.collidables = [
+      { mesh: this.room.floor, type: "floor" },
+      { mesh: this.room.ceiling, type: "ceiling" },
+      ...Object.values(this.room.walls).map((w) => ({ mesh: w, type: "wall" })),
+    ];
+
+
+  
+
 
     //this.floor.loadFloorTexture(
     //    this.room,
@@ -162,16 +166,6 @@ export class Level1 {
     this.combinationLock4 =
       this.combinationLockPuzzle.createBaseCombinationLock();
 
-    this.couch1 = this.Couch1.createCouch(
-      this.scene,
-      { x: -10, y: 0, z: 10 },
-      Math.PI / 2
-    );
-    this.couch2 = this.Couch1.createCouch(
-      this.scene,
-      { x: 10, y: 0, z: 10 },
-      -Math.PI
-    );
 
     this.collidables = [
       { mesh: this.room.floor, type: "floor" },
@@ -179,20 +173,7 @@ export class Level1 {
       ...Object.values(this.room.walls).map((w) => ({ mesh: w, type: "wall" })),
     ];
 
-    this.Table = new table1();
-    this.Bookshelf = new BookShelf();
-    this.Couch1 = new Couch();
-    this.Carpet1 = new Carpet();
-    this.Fireplace = new FirePlace();
-    this.combinationLockPuzzle = new CombinationLockPuzzle();
-    this.modelLoader = new ModelLoader();
-    this.clockPuzzle = new ClockPuzzle();
-    this.drawerPuzzle = new DrawerPuzzle();
-    this.buttonPuzzle = new ButtonPuzzle();
-    this.floor = new Floor();
-    this.wall = new Wall();
-    this.ceiling = new Ceiling();
-    this.tallyMarks = new TallyMarks();
+
 
     this.floor.loadFloorTexture(
       this.room,
@@ -201,32 +182,7 @@ export class Level1 {
     this.wall.loadWallTexture(this.room, "./src/textures/wall_4.jpg", "all");
     this.ceiling.loadCeilingTexture(this.room, "./src/textures/ceiling_1.jpg");
 
-    this.clock = this.clockPuzzle.createBaseClock();
-
-    this.Basedrawer = this.drawerPuzzle.createBaseDrawer();
-
-    this.drawer1 = this.Basedrawer.drawer1;
-    this.drawer2 = this.Basedrawer.drawer2;
-    this.drawer = this.Basedrawer.container;
-
-    this.lock1 = this.Basedrawer.lock1;
-    this.lock2 = this.Basedrawer.lock2;
-    this.lock3 = this.Basedrawer.lock3;
-    this.lock4 = this.Basedrawer.lock4;
-
-    this.button1 = this.Basedrawer.button1;
-    this.button2 = this.Basedrawer.button2;
-    this.button3 = this.buttonPuzzle.createBaseButton();
-    this.button4 = this.buttonPuzzle.createBaseButton();
-
-    this.combinationLock1 =
-      this.combinationLockPuzzle.createBaseCombinationLock();
-    this.combinationLock2 =
-      this.combinationLockPuzzle.createBaseCombinationLock();
-    this.combinationLock3 =
-      this.combinationLockPuzzle.createBaseCombinationLock();
-    this.combinationLock4 =
-      this.combinationLockPuzzle.createBaseCombinationLock();
+    
 
     this.couch1 = this.Couch1.createCouch(
       this.scene,
@@ -266,30 +222,30 @@ export class Level1 {
       { x: Math.PI / 2, y: 0, z: 0 },
       "coffeeTable"
     );
-    this.painting = this.modelLoader.loadModel(
-      this.scene,
-      "./models/painting.glb",
-      { x: -21.3, y: 6.5, z: 0 },
-      6.6,
-      Math.PI / 2,
-      "painting"
-    );
-    this.painting_2 = this.modelLoader.loadModel(
-      this.scene,
-      "./models/my_haunted_painting.glb",
-      { x: -21.3, y: 6.5, z: 5 },
-      0.5,
-      { x: 0, y: 0, z: -Math.PI / 2 },
-      "painting_2"
-    );
-    this.carpet_model = this.modelLoader.loadModel(
-      this.scene,
-      "./models/carpet.glb",
-      { x: 5, y: 0.3, z: 4 },
-      0.3,
-      0,
-      "carpet_model"
-    );
+    // this.painting = this.modelLoader.loadModel(
+    //   this.scene,
+    //   "./models/painting.glb",
+    //   { x: -21.3, y: 6.5, z: 0 },
+    //   6.6,
+    //   Math.PI / 2,
+    //   "painting"
+    // );
+    // this.painting_2 = this.modelLoader.loadModel(
+    //   this.scene,
+    //   "./models/my_haunted_painting.glb",
+    //   { x: -21.3, y: 6.5, z: 5 },
+    //   0.5,
+    //   { x: 0, y: 0, z: -Math.PI / 2 },
+    //   "painting_2"
+    // );
+    // this.carpet_model = this.modelLoader.loadModel(
+    //   this.scene,
+    //   "./models/carpet.glb",
+    //   { x: 5, y: 0.3, z: 4 },
+    //   0.3,
+    //   0,
+    //   "carpet_model"
+    // );
     this.table_model = this.modelLoader.loadModel(
       this.scene,
       "./models/table.glb",
@@ -524,22 +480,22 @@ export class Level1 {
     this.combinationLock4.mesh.position.set(2.5, 6, 22.1);
 
     const tally1 = this.tallyMarks.createTallyMarks(
-      { x: -20.9, y: 13, z: 18.5 },
+      { x: -21.5, y: 13, z: 18.5 },
       Math.PI / 2,
       2
     );
     const tally2 = this.tallyMarks.createTallyMarks(
-      { x: 20.9, y: 13, z: -18.5 },
+      { x: 21.5, y: 13, z: -18.5 },
       -Math.PI / 2,
       4
     );
     const tally3 = this.tallyMarks.createTallyMarks(
-      { x: 18.5, y: 13, z: 20.9 },
+      { x: 18.5, y: 13, z: 21.5 },
       Math.PI,
       3
     );
     const tally4 = this.tallyMarks.createTallyMarks(
-      { x: -18.5, y: 13, z: -19.9 },
+      { x: -18.5, y: 13, z: -21.5 },
       0,
       5
     );
@@ -621,7 +577,7 @@ export class Level1 {
       this.combinationLock3,
       this.combinationLock4,
     ];
-    this.combinationValues = [1, 1, 1, 1];
+    this.combinationValues = [2, 3, 5, 4];
 
     this.worldLoading = false;
     toggleLoadingOverlay(false);
