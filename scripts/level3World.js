@@ -109,7 +109,7 @@ export class Level3_World {
 
     this.textureObject = new TextureObject();
     this.textureObject.createFramedDocument('./src/textures/puzzle.jpeg', 6, 4.5); 
-    this.textureObject.position.set(0, 8, 20.5); 
+    this.textureObject.position.set(0, 8, 21.2); 
     this.textureObject.rotation.y = Math.PI;
     this.room.add(this.textureObject);
 
