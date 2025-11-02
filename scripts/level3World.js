@@ -8,6 +8,7 @@ import { Floor_Level3 } from "./floor_level3";
 import { ModelLoader } from "./modelLoader";
 import { CombinationLockPuzzle } from "./combinationLockPuzzle";
 import { MultiplePapers } from "./level3_papers";
+import { TextureObject } from './textureObject';
 
 //this are purely just helper functions to manage loading overlay
 const updateLoadingStatus = (message) => {
@@ -106,6 +107,16 @@ export class Level3_World {
 
     this.setConbinationValues(this.combList, [2, 0, 5, 5, 8, 3, 9]);
 
+    this.textureObject = new TextureObject();
+    this.textureObject.createFramedDocument('./src/textures/puzzle.jpeg', 6, 4.5); 
+    this.textureObject.position.set(0, 8, 20.5); 
+    this.textureObject.rotation.y = Math.PI;
+    this.room.add(this.textureObject);
+
+    const puzzleLight = new THREE.PointLight(0xffffff, 1.8, 8, 1.5);
+    puzzleLight.position.set(0, 8, 19); 
+    this.room.add(puzzleLight);
+
     //the notes in the level
     this.note1 = new MultiplePapers(
       "../src/textures/tx3.webp",
@@ -191,6 +202,7 @@ export class Level3_World {
     this.collidables = [
       { mesh: this.room.floor, type: "floor" },
       { mesh: this.room.ceiling, type: "ceiling" },
+      { mesh: this.textureObject, type: 'wall' }, 
       { mesh: this.note1, type: "interactable" },
       { mesh: this.note2, type: "interactable" },
       { mesh: this.note3, type: "interactable" },
@@ -387,10 +399,6 @@ export class Level3_World {
     this.room.add(spotlight2.target);
 
     // Wall lights - accent lighting on walls
-    // Front wall lights
-    const wallLight1 = new THREE.PointLight(0xffaa66, 6.5, 15, 2);
-    wallLight1.position.set(0, 8, 20);
-    this.room.add(wallLight1);
 
     // Back wall lights
     const wallLight2 = new THREE.PointLight(0xffaa66, 6.5, 15, 2);
