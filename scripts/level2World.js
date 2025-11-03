@@ -75,7 +75,7 @@ export class Level2 {
     this.kCeiling = new KCeiling();
     this.kTable = new Ktable();
     this.dailPuzzle = new DailPuzzle();
-    this.clue = new Paper(1, 2, "../public/textures/level2_paper.png");
+    this.clue = new Paper(1, 2, "/textures/level2_paper.png");
 
     this.dail1 = this.dailPuzzle.createBaseDail();
     this.dail2 = this.dailPuzzle.createBaseDail();
