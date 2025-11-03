@@ -4,7 +4,7 @@ import { TextureLoader } from 'three';
  
 
 const loader = new TextureLoader();
-const PAPER_TEXTURE_PATH = '../src/textures/tx3.webp'; // Path to your paper texture image
+const PAPER_TEXTURE_PATH = '/textures/tx3.webp'; // Path to your paper texture image
 export class RiddlePuzzle extends THREE.Group{
     constructor(riddleText,correctAnswer, position = new THREE.Vector3(-37.0, 3.2, -36.0)){
         super();
@@ -174,7 +174,7 @@ export class RiddlePuzzle extends THREE.Group{
     const loader = new THREE.TextureLoader();
 
     // Machine body texture
-    const machineTexture = loader.load('../src/textures/machine.jpg');
+    const machineTexture = loader.load('/textures/machine.jpg');
     machineTexture.wrapS = machineTexture.wrapT = THREE.RepeatWrapping;
     machineTexture.repeat.set(1, 1);
     machineTexture.anisotropy = 16;

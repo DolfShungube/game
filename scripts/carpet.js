@@ -16,10 +16,10 @@ createCarpet() {
     const carpetGeometry = new THREE.PlaneGeometry(carpetWidth, carpetDepth);
     
     // Load PBR textures
-    const baseTexture = textureLoader.load('./src/textures/carpet/Color.jpg');
-    const normalTexture = textureLoader.load('./src/textures/carpet/NormalGL.jpg');
-    const roughnessTexture = textureLoader.load('./src/textures/carpet/Roughness.jpg');
-    const displacementTexture = textureLoader.load('./src/textures/carpet/Displacement.jpg');
+    const baseTexture = textureLoader.load('/textures/carpet/Color.jpg');
+    const normalTexture = textureLoader.load('/textures/carpet/NormalGL.jpg');
+    const roughnessTexture = textureLoader.load('/textures/carpet/Roughness.jpg');
+    const displacementTexture = textureLoader.load('/textures/carpet/Displacement.jpg');
     
     // Configure textures
     [baseTexture, normalTexture, roughnessTexture, displacementTexture].forEach(texture => {

@@ -75,7 +75,7 @@ export class Level2 {
     this.kCeiling = new KCeiling();
     this.kTable = new Ktable();
     this.dailPuzzle = new DailPuzzle();
-    this.clue = new Paper(1, 2, "./src/textures/level2_paper.png");
+    this.clue = new Paper(1, 2, "../public/textures/level2_paper.png");
 
     this.dail1 = this.dailPuzzle.createBaseDail();
     this.dail2 = this.dailPuzzle.createBaseDail();
@@ -107,7 +107,7 @@ export class Level2 {
 
     this.stove = this.modelLoader.loadModel(
       this.scene,
-      "./models/gas_stove.glb",
+      "/models/gas_stove.glb",
       { x: 8, y: 2.7, z: -12 },
       4.5,
       0
@@ -117,7 +117,7 @@ export class Level2 {
 
     this.ceiling_light = this.modelLoader.loadModel(
       this.scene,
-      "./models/level2/ceiling_light.glb",
+      "/models/level2/ceiling_light.glb",
       { x: 0, y: 15, z: 0 },
       1.5,
       { x: 0, y: -Math.PI, z: 0 },
@@ -127,7 +127,7 @@ export class Level2 {
     // Adding a door
     this.Door = this.modelLoader.loadModel(
       this.scene,
-      "./models/level2/cheap_painted_door.glb",
+      "/models/level2/cheap_painted_door.glb",
       { x: -5, y: 6.0, z: 14 },
       5.5,
       { x: 0, y: -Math.PI, z: 0 },
@@ -136,49 +136,49 @@ export class Level2 {
 
     this.top = this.modelLoader.loadModel(
       this.scene,
-      "./models/top.glb",
+      "/models/top.glb",
       { x: -10, y: 0, z: -14 },
       5,
       0
     );
     this.microwave = this.modelLoader.loadModel(
       this.scene,
-      "./models/microwave.glb",
+      "/models/microwave.glb",
       { x: -10, y: 4.5, z: -14 },
       0.8,
       0
     );
     this.fridge = this.modelLoader.loadModel(
       this.scene,
-      "./models/fridge.glb",
+      "/models/fridge.glb",
       { x: -13, y: 0, z: 0 },
       3,
       Math.PI / 2
     );
     this.sink = this.modelLoader.loadModel(
       this.scene,
-      "./models/sink.glb",
+      "/models/sink.glb",
       { x: 0, y: 4.2, z: -14 },
       6,
       0
     );
     this.trashCan = this.modelLoader.loadModel(
       this.scene,
-      "./models/trashcan.glb",
+      "/models/trashcan.glb",
       { x: -13, y: 0, z: -13 },
       3,
       0
     );
     this.painting = this.modelLoader.loadModel(
       this.scene,
-      "./models/painting.glb",
+      "/models/painting.glb",
       { x: -13.5, y: 7, z: -5 },
       2,
       Math.PI / 2
     );
     this.clock = this.modelLoader.loadModel(
       this.scene,
-      "./models/clock.glb",
+      "/models/clock.glb",
       { x: 0, y: 9, z: -14 },
       3.5,
       0
@@ -223,15 +223,15 @@ export class Level2 {
 
     this.kFloor.loadFloorTexture(
       this.room,
-      "./src/textures/floor_level_2/textures/floor_tiles_06_diff_4k.jpg"
+      "/textures/floor_level_2/textures/floor_tiles_06_diff_4k.jpg"
     );
     this.kWall.loadWallTexture(
       this.room,
-      "./src/textures/wall_plaster_level_2/textures/Texturelabs_Fabric_180XL.jpg"
+      "/textures/wall_plaster_level_2/textures/Texturelabs_Fabric_180XL.jpg"
     );
     this.kCeiling.loadCeilingTexture(
       this.room,
-      "./src/textures/wall_plaster_level_2/textures/Texturelabs_Brick_132L.jpg"
+      "/textures/wall_plaster_level_2/textures/Texturelabs_Brick_132L.jpg"
     );
     this.room.add(this.ceilingSpotlight);
     // this.room.add(this.ceilingSpotlight.target);
@@ -254,7 +254,7 @@ export class Level2 {
     // Use a Promise to ensure we wait for the audio to load
     await new Promise((resolve) => {
       audioLoader.load(
-        "./src/textures/escape.mp3",
+        "/textures/escape.mp3",
         (buffer) => {
           this.bgMusic.setBuffer(buffer);
           this.bgMusic.setLoop(true);

@@ -3,7 +3,7 @@ import * as THREE from 'three';
 export function createTable(){
 
   const loader = new THREE.TextureLoader();
-  const woodTexture = loader.load('../src/textures/wood.jpg'); 
+  const woodTexture = loader.load('/textures/wood.jpg'); 
   woodTexture.wrapS = woodTexture.wrapT = THREE.RepeatWrapping;
   woodTexture.repeat.set(2, 2);
   woodTexture.anisotropy = 16;

@@ -14,7 +14,7 @@ loadFridgeModel(scene, collidables) {
     const loader = new GLTFLoader();
     
     // Try with URL encoding for the path with spaces and parentheses
-    const fridgePath = './src/textures/house_props_fridge/scene.gltf';
+    const fridgePath = '/textures/house_props_fridge/scene.gltf';
     
     loader.load(
         fridgePath,

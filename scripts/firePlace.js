@@ -13,13 +13,13 @@ createFireplace() {
     const textureLoader = new THREE.TextureLoader();
     
     // Load brick textures
-    const brickColor = textureLoader.load('./src/textures/fireplace/Bricks_Color.jpg');
-    const brickNormal = textureLoader.load('./src/textures/fireplace/Bricks101_NormalDX.jpg');
-    const brickRoughness = textureLoader.load('./src/textures/fireplace/Bricks101_Roughness.jpg');
-    const brickDisplacement = textureLoader.load('./src/textures/fireplace/Bricks_Displacement.jpg');
-    const brickOcclusion = textureLoader.load('./src/textures/fireplace/Bricks_Occlusion.jpg');
-    const woodCover = textureLoader.load('./src/textures/fireplace/WoodFloor041_Color.jpg');
-    const darkInteriorTexture = textureLoader.load('./src/textures/fireplace/dark_Color.jpg');
+    const brickColor = textureLoader.load('/textures/fireplace/Bricks_Color.jpg');
+    const brickNormal = textureLoader.load('/textures/fireplace/Bricks101_NormalDX.jpg');
+    const brickRoughness = textureLoader.load('/textures/fireplace/Bricks101_Roughness.jpg');
+    const brickDisplacement = textureLoader.load('/textures/fireplace/Bricks_Displacement.jpg');
+    const brickOcclusion = textureLoader.load('/textures/fireplace/Bricks_Occlusion.jpg');
+    const woodCover = textureLoader.load('/textures/fireplace/WoodFloor041_Color.jpg');
+    const darkInteriorTexture = textureLoader.load('/textures/fireplace/dark_Color.jpg');
     
     // Helper function to create brick material
     const createBrickMaterial = () => {

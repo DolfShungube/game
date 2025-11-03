@@ -15,9 +15,9 @@ createCouch(scene, position, rotation) {
     const couchGroup = new THREE.Group();
     
     // Load couch textures
-    const diffuseMap = textureLoader.load('./src/textures/couch/textures/wire_196088225_diffuse.png');
-    const normalMap = textureLoader.load('./src/textures/couch/textures/wire_196088225_normal.png');
-    const specularMap = textureLoader.load('./src/textures/couch/textures/wire_196088225_specularGlossiness.png');
+    const diffuseMap = textureLoader.load('/textures/couch/textures/wire_196088225_diffuse.png');
+    const normalMap = textureLoader.load('/textures/couch/textures/wire_196088225_normal.png');
+    const specularMap = textureLoader.load('/textures/couch/textures/wire_196088225_specularGlossiness.png');
     
     // Configure textures
     [diffuseMap, normalMap, specularMap].forEach(texture => {
@@ -29,7 +29,7 @@ createCouch(scene, position, rotation) {
     
     diffuseMap.colorSpace = THREE.SRGBColorSpace;
     
-    loader.load('./src/textures/couch_2.glb', function (gltf) {
+    loader.load('/textures/couch_2.glb', function (gltf) {
         gltf.scene.scale.set(0.02, 0.02, 0.02);
         
         gltf.scene.traverse((child) => {

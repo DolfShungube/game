@@ -14,7 +14,7 @@ loadStoveModel(scene, collidables) {
     const loader = new GLTFLoader();
     
     loader.load(
-        './src/textures/stove/scene.gltf',
+        '/textures/stove/scene.gltf',
         (gltf) => {
             console.log('✓ Stove loaded successfully');
             const stove = gltf.scene;

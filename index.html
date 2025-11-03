@@ -17,7 +17,7 @@
      body {
   background: 
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-    url('../src/textures/background.jpg') center/cover no-repeat fixed;
+    url('/textures/background.jpg') center/cover no-repeat fixed;
      background-size:  100%; 
   overflow: hidden;
   color: white;
@@ -145,7 +145,7 @@
   </head>
   <body>
     <audio id="menu-music" loop>
-        <source src="./src/textures/menu_music.mp3" type="audio/mpeg">
+        <source src="/textures/menu_music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <div id="app"></div>
@@ -279,7 +279,7 @@
       <button onclick="closePopup('credits-popup')">Close</button>
     </div>
 
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./main.js"></script>
     <script>
       // Pop-up control logic
       const aboutBtn = document.getElementById("about-btn");

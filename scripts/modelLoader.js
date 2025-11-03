@@ -22,14 +22,15 @@ loadModel(scene, modelUrl, position, scale, rotation = { x: 0, y: 0, z: 0 }, nam
 
     
     // Try multiple possible paths
-    const basePath = modelUrl.replace('./', '').replace('/', '');
+    //const basePath = modelUrl.replace('./', '').replace('/', '');
     const paths = [
-        modelUrl,
-        './' + basePath,
-        './public/' + basePath,
-        basePath,
-        'public/' + basePath,
-        '/' + basePath
+        modelUrl
+        // ,
+        // './' + basePath,
+        // './public/' + basePath,
+        // basePath,
+        // 'public/' + basePath,
+        // '/' + basePath
     ];
     
     let currentPathIndex = 0;

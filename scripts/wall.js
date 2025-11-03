@@ -39,7 +39,7 @@ loadWallTexture(room, texturePath, wallSide = 'all') {
         });
         
         // Try to load normal map
-        const normalMapPath = './src/textures/wall_4_ambient.png';
+        const normalMapPath = '/textures/wall_4_ambient.png';
         textureLoader.load(normalMapPath, (normalTexture) => {
             configureTexture(normalTexture, 2);
             wallMaterial.normalMap = normalTexture;

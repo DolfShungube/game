@@ -13,7 +13,7 @@ loadAdvancedWallTexture(room, wallSide = 'all') {
         const textureLoader = new THREE.TextureLoader();
         
         // Base path for wall textures
-        const basePath = './src/textures/rock_wall_level3/textures/';
+        const basePath = '/textures/rock_wall_level3/textures/';
         
         // Load all texture maps
         const diffuseMap = textureLoader.load(basePath + 'rock_wall_13_diff_4k.jpg');

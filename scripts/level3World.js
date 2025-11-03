@@ -108,7 +108,7 @@ export class Level3_World {
     this.setConbinationValues(this.combList, [2, 0, 5, 5, 8, 3, 9]);
 
     this.textureObject = new TextureObject();
-    this.textureObject.createFramedDocument('./src/textures/puzzle.jpeg', 6, 4.5); 
+    this.textureObject.createFramedDocument('/textures/puzzle.jpeg', 6, 4.5); 
     this.textureObject.position.set(0, 8, 21.2); 
     this.textureObject.rotation.y = Math.PI;
     this.room.add(this.textureObject);
@@ -119,50 +119,50 @@ export class Level3_World {
 
     //the notes in the level
     this.note1 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "I counted 52, but I am sure there were more of us.",
       new THREE.Vector3(-5, 5, -5),
       "1"
     );
     this.note2 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "I think it has been 39 minutes and some of us think somthing is wrong.",
       new THREE.Vector3(-3, 5, -7),
       "2"
     );
 
     this.note3 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "Only 15 of us remain.",
       new THREE.Vector3(-1, 5, 1),
       "3"
     );
     this.note4 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "First we were 72.",
       new THREE.Vector3(2, 5, 1),
       "4"
     );
     this.note5 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "9 went missing again,3 of them were close to me.",
       new THREE.Vector3(5, 5, 1),
       "5"
     );
     this.note6 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "10 or 11, I can't hear clearly.",
       new THREE.Vector3(8, 5, 1),
       "6"
     );
     this.note7 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "I heard 8 of them I think, or maybe it was 11 but I could tell they were all different.",
       new THREE.Vector3(10, 5, 1),
       "8"
     );
     this.note8 = new MultiplePapers(
-      "../src/textures/tx3.webp",
+      "/textures/tx3.webp",
       "I will write it down next time",
       new THREE.Vector3(13, 5, 1),
       "7"
@@ -232,7 +232,7 @@ export class Level3_World {
     // Load textures for the room - using laminate floor with PBR textures
     this.floor_level3.loadAdvancedFloorTexture(this.room);
     this.wall_level3.loadAdvancedWallTexture(this.room);
-    this.ceiling.loadCeilingTexture(this.room, "./src/textures/ceiling_1.jpg");
+    this.ceiling.loadCeilingTexture(this.room, "/textures/ceiling_1.jpg");
 
     this.combinationLock1.mesh.rotation.z = Math.PI / 2;
     this.combinationLock1.mesh.rotation.y = -Math.PI / 2;
@@ -291,7 +291,7 @@ export class Level3_World {
     // Loading models
     this.Table = this.modelLoader.loadModel(
       this.scene,
-      "./models/level3/simple_table_low_poly.glb",
+      "/models/level3/simple_table_low_poly.glb",
       { x: 0, y: 2, z: 0 },
       6,
       { x: 0, y: -Math.PI / 2, z: 0 },
@@ -300,7 +300,7 @@ export class Level3_World {
 
     this.Door = this.modelLoader.loadModel(
       this.scene,
-      "./models/level3/door.glb",
+      "/models/level3/door.glb",
       { x: 21.5, y: 8.5, z: 0 },
       0.04,
       { x: 0, y: -Math.PI / 2, z: 0 },
@@ -309,7 +309,7 @@ export class Level3_World {
 
     this.Board = this.modelLoader.loadModel(
       this.scene,
-      "./models/level3/realistic_blackboard.glb",
+      "/models/level3/realistic_blackboard.glb",
       { x: -21.3, y: 7.5, z: 0 },
       4,
       { x: 0, y: Math.PI / 2, z: 0 },
@@ -323,7 +323,7 @@ export class Level3_World {
 
     this.ceiling_light = this.modelLoader.loadModel(
       this.scene,
-      "./models/level3/ceiling_light.glb",
+      "/models/level3/ceiling_light.glb",
       { x: 4, y: 11, z: 0 },
       0.01,
       { x: 0, y: Math.PI / 2, z: 0 },
@@ -340,7 +340,7 @@ export class Level3_World {
 
     this.ceiling_light2 = this.modelLoader.loadModel(
       this.scene,
-      "./models/level3/ceiling_light.glb",
+      "/models/level3/ceiling_light.glb",
       { x: -4, y: 11, z: 0 },
       0.01,
       { x: 0, y: Math.PI / 2, z: 0 },
@@ -460,7 +460,7 @@ export class Level3_World {
 
     await new Promise((resolve) => {
       audioLoader.load(
-        "./src/textures/escape.mp3",
+        "/textures/escape.mp3",
         (buffer) => {
           this.bgMusic.setBuffer(buffer);
           this.bgMusic.setLoop(true);

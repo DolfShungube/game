@@ -83,14 +83,14 @@ const table=Table.createTable();
  const fireplace = Fireplace.createFireplace();
  
 const bookshelf = Bookshelf.loadBookshelf(scene,{ x: -12, y: 0, z: 20},6.2,Math.PI / 2);
-const coffeeTable = modelLoader.loadModel(scene,'./models/coffee_table.glb',{ x: 8, y: 0.3, z: 3 },4.5,{ x: Math.PI / 2, y: 0, z: 0 },'coffeeTable');
-const painting =  modelLoader.loadModel(scene,'./models/painting.glb',{ x: -21.3, y: 6.5, z: 0 },6.6, Math.PI /2,'painting');
-const painting_2 =  modelLoader.loadModel(scene,'./models/my_haunted_painting.glb',{ x: -21.3, y: 6.5, z: 5 },0.5,{ x: 0, y: 0, z: -Math.PI/2},'painting_2');
-const carpet_model =  modelLoader.loadModel(scene,'./models/carpet.glb',{x:5 , y:0.3 , z:4 },0.3,0,'carpet_model');
-const table_model =  modelLoader.loadModel(scene, './models/table.glb',{x: 16, y : 0, z :-15.0},0.7,-Math.PI/2,'table_model')
-const table_model_lamp =  modelLoader.loadModel(scene, './models/soviet_old_table.glb',{x: -20, y : 0.5, z :-10.0},7.0,0 ,'table_model_lamp')
-const lamp =  modelLoader.loadModel(scene, './models/table_lamp_01.glb', {x: -20, y : 3.5, z :-7.0},0.05,0 ,'lamp')
-const books =  modelLoader.loadModel(scene, './models/books_with_magnifier.glb', {x: -19.5, y : 3.5, z :-12.0},7.0,-Math.PI/2 ,'books')
+const coffeeTable = modelLoader.loadModel(scene,'/models/coffee_table.glb',{ x: 8, y: 0.3, z: 3 },4.5,{ x: Math.PI / 2, y: 0, z: 0 },'coffeeTable');
+const painting =  modelLoader.loadModel(scene,'/models/painting.glb',{ x: -21.3, y: 6.5, z: 0 },6.6, Math.PI /2,'painting');
+const painting_2 =  modelLoader.loadModel(scene,'/models/my_haunted_painting.glb',{ x: -21.3, y: 6.5, z: 5 },0.5,{ x: 0, y: 0, z: -Math.PI/2},'painting_2');
+const carpet_model =  modelLoader.loadModel(scene,'/models/carpet.glb',{x:5 , y:0.3 , z:4 },0.3,0,'carpet_model');
+const table_model =  modelLoader.loadModel(scene, '/models/table.glb',{x: 16, y : 0, z :-15.0},0.7,-Math.PI/2,'table_model')
+const table_model_lamp =  modelLoader.loadModel(scene, '/models/soviet_old_table.glb',{x: -20, y : 0.5, z :-10.0},7.0,0 ,'table_model_lamp')
+const lamp =  modelLoader.loadModel(scene, '/models/table_lamp_01.glb', {x: -20, y : 3.5, z :-7.0},0.05,0 ,'lamp')
+const books =  modelLoader.loadModel(scene, '/models/books_with_magnifier.glb', {x: -19.5, y : 3.5, z :-12.0},7.0,-Math.PI/2 ,'books')
 
 
 const riddle = "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?";
@@ -156,9 +156,9 @@ const collidables =[
 room.generateBaseRoom();
 
 
- floor.loadFloorTexture(room, './src/textures/floor_level1_(1).jpg');
- wall.loadWallTexture(room, './src/textures/wall_4.jpg', 'all');
- ceiling.loadCeilingTexture(room, './src/textures/ceiling_1.jpg');
+ floor.loadFloorTexture(room, '/textures/floor_level1_(1).jpg');
+ wall.loadWallTexture(room, '/textures/wall_4.jpg', 'all');
+ ceiling.loadCeilingTexture(room, '/textures/ceiling_1.jpg');
 
 
 clock.mesh.scale.set(2,2,2)

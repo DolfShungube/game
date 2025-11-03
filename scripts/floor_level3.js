@@ -13,7 +13,7 @@ loadAdvancedFloorTexture(room) {
         const textureLoader = new THREE.TextureLoader();
         
         // Base paths
-        const basePath = './src/textures/floor_level3/textures/';
+        const basePath = '/textures/floor_level3/textures/';
         
         // Load all textures
         const diffuseMap = textureLoader.load(basePath + 'laminate_floor_02_diff_4k.jpg');

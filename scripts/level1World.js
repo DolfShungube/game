@@ -136,8 +136,8 @@ export class Level1 {
     //   "./src/textures/floor_level1_(1).jpg"
     // );
     this.floor_level3.loadAdvancedFloorTexture(this.room);
-    this.wall.loadWallTexture(this.room, "./src/textures/wall_4.jpg", "all");
-    this.ceiling.loadCeilingTexture(this.room, "./src/textures/ceiling_1.jpg");
+    this.wall.loadWallTexture(this.room, "/textures/wall_4.jpg", "all");
+    this.ceiling.loadCeilingTexture(this.room, "/textures/ceiling_1.jpg");
 
     this.clock = this.clockPuzzle.createBaseClock();
 
@@ -177,10 +177,10 @@ export class Level1 {
 
     this.floor.loadFloorTexture(
       this.room,
-      "./src/textures/floor_level1_(1).jpg"
+      "/textures/floor_level1_(1).jpg"
     );
-    this.wall.loadWallTexture(this.room, "./src/textures/wall_4.jpg", "all");
-    this.ceiling.loadCeilingTexture(this.room, "./src/textures/ceiling_1.jpg");
+    this.wall.loadWallTexture(this.room, "/textures/wall_4.jpg", "all");
+    this.ceiling.loadCeilingTexture(this.room, "/textures/ceiling_1.jpg");
 
     
 
@@ -207,7 +207,7 @@ export class Level1 {
     // Adding a door
     this.Door = this.modelLoader.loadModel(
       this.scene,
-      "./models/level1/low-poly_door.glb",
+      "/models/level1/low-poly_door.glb",
       { x: -10, y: 0, z: -21.5 },
       5.5,
       { x: 0, y: -Math.PI, z: 0 },
@@ -216,7 +216,7 @@ export class Level1 {
 
     this.coffeeTable = this.modelLoader.loadModel(
       this.scene,
-      "./models/coffee_table.glb",
+      "/models/coffee_table.glb",
       { x: 8, y: 0.3, z: 3 },
       4.5,
       { x: Math.PI / 2, y: 0, z: 0 },
@@ -248,7 +248,7 @@ export class Level1 {
     // );
     this.table_model = this.modelLoader.loadModel(
       this.scene,
-      "./models/table.glb",
+      "/models/table.glb",
       { x: 16, y: 0, z: -15.0 },
       0.7,
       -Math.PI / 2,
@@ -256,7 +256,7 @@ export class Level1 {
     );
     this.table_model_lamp = this.modelLoader.loadModel(
       this.scene,
-      "./models/soviet_old_table.glb",
+      "/models/soviet_old_table.glb",
       { x: -20, y: 0.5, z: -10.0 },
       7.0,
       0,
@@ -264,7 +264,7 @@ export class Level1 {
     );
     this.lamp = this.modelLoader.loadModel(
       this.scene,
-      "./models/table_lamp_01.glb",
+      "/models/table_lamp_01.glb",
       { x: -20, y: 3.5, z: -7.0 },
       0.05,
       0,
@@ -272,7 +272,7 @@ export class Level1 {
     );
     this.books = this.modelLoader.loadModel(
       this.scene,
-      "./models/books_with_magnifier.glb",
+      "/models/books_with_magnifier.glb",
       { x: -19.5, y: 3.5, z: -12.0 },
       7.0,
       -Math.PI / 2,
@@ -280,7 +280,7 @@ export class Level1 {
     );
     this.ceiling_light = this.modelLoader.loadModel(
       this.scene,
-      "./models/level1/living_lamp.glb",
+      "/models/level1/living_lamp.glb",
       { x: 0, y: 16, z: 0 },
       0.02,
       -Math.PI / 2,
@@ -555,7 +555,7 @@ export class Level1 {
     updateLoadingStatus("Loading the Room....");
     await new Promise((resolve) => {
       audioLoader.load(
-        "./src/textures/escape.mp3",
+        "/textures/escape.mp3",
         (buffer) => {
           this.bgMusic.setBuffer(buffer);
           this.bgMusic.setLoop(true);

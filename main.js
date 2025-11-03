@@ -1,8 +1,8 @@
-import { level1_World } from '../scripts/level1.js';
-import { Level1 } from '../scripts/level1World.js';
-import { level2_World } from '../scripts/level2.js';
-import { Level2 } from '../scripts/level2World.js';
-import { Level3_World } from '../scripts/level3World.js';
+import { level1_World } from './scripts/level1.js';
+import { Level1 } from './scripts/level1World.js';
+import { level2_World } from './scripts/level2.js';
+import { Level2 } from './scripts/level2World.js';
+import { Level3_World } from './scripts/level3World.js';
 import { Settings } from './Settings.js';
 
 // Initialize settings

@@ -29,7 +29,7 @@ export function level2_World() {
     const kCeiling= new KCeiling()
     const kTable= new Ktable()
     const dailPuzzle = new DailPuzzle()
-    const clue= new Paper(1,2,'./src/textures/level2_paper.png')
+    const clue= new Paper(1,2,'/textures/level2_paper.png')
 
     const dail1= dailPuzzle.createBaseDail()
     const dail2= dailPuzzle.createBaseDail()
@@ -63,14 +63,14 @@ export function level2_World() {
 
 
 
-const stove = modelLoader.loadModel(scene,'./models/gas_stove.glb',{ x: 8, y: 2.7, z: -12 },4.5,0);
-const top = modelLoader.loadModel(scene,'./models/top.glb',{ x: -10, y: 0, z: -14 },5,0);
-const microwave = modelLoader.loadModel(scene,'./models/microwave.glb',{ x: -10, y: 4.5, z: -14 },0.8,0);
-const fridge = modelLoader.loadModel(scene,'./models/fridge.glb',{ x: -13, y: 0, z: 0 },3,Math.PI/2);
-const sink = modelLoader.loadModel(scene,'./models/sink.glb',{ x: 0, y: 4.2, z: -14 },6,0);
-const trashCan = modelLoader.loadModel(scene,'./models/trashcan.glb',{ x: -13, y: 0, z: -13 },3,0);
-const painting = modelLoader.loadModel(scene,'./models/painting.glb',{ x: -13.5, y: 7, z: -5 },2,Math.PI/2);
-const clock = modelLoader.loadModel(scene,'./models/clock.glb',
+const stove = modelLoader.loadModel(scene,'/models/gas_stove.glb',{ x: 8, y: 2.7, z: -12 },4.5,0);
+const top = modelLoader.loadModel(scene,'/models/top.glb',{ x: -10, y: 0, z: -14 },5,0);
+const microwave = modelLoader.loadModel(scene,'/models/microwave.glb',{ x: -10, y: 4.5, z: -14 },0.8,0);
+const fridge = modelLoader.loadModel(scene,'/models/fridge.glb',{ x: -13, y: 0, z: 0 },3,Math.PI/2);
+const sink = modelLoader.loadModel(scene,'/models/sink.glb',{ x: 0, y: 4.2, z: -14 },6,0);
+const trashCan = modelLoader.loadModel(scene,'/models/trashcan.glb',{ x: -13, y: 0, z: -13 },3,0);
+const painting = modelLoader.loadModel(scene,'/models/painting.glb',{ x: -13.5, y: 7, z: -5 },2,Math.PI/2);
+const clock = modelLoader.loadModel(scene,'/models/clock.glb',
   { x: 0, y: 9, z: -14 }, 3.5, 0);
 
 const obj=[stove,top,microwave,fridge,sink,trashCan,painting,clock]
@@ -79,9 +79,9 @@ for(let i=0;i<obj.length;i++){
     collidables.push({mesh:obj[i],type:"wall"})
 }
 
-    kFloor.loadFloorTexture(room, './src/textures/floor_level_2/textures/floor_tiles_06_diff_4k.jpg');
-    kWall.loadWallTexture(room, './src/textures/wall_plaster_level_2/textures/Texturelabs_Fabric_180XL.jpg');
-    kCeiling.loadCeilingTexture(room, './src/textures/wall_plaster_level_2/textures/Texturelabs_Brick_132L.jpg');
+    kFloor.loadFloorTexture(room, '/textures/floor_level_2/textures/floor_tiles_06_diff_4k.jpg');
+    kWall.loadWallTexture(room, '/textures/wall_plaster_level_2/textures/Texturelabs_Fabric_180XL.jpg');
+    kCeiling.loadCeilingTexture(room, '/textures/wall_plaster_level_2/textures/Texturelabs_Brick_132L.jpg');
 
     scene.add(room);
 

@@ -18,9 +18,9 @@ loadBookshelf(scene, position, scale, rotation = 0) {
     // Try multiple possible paths
     const paths = [
         './models/bookshelf.glb',
-        './public/models/bookshelf.glb',
+        '../public/models/bookshelf.glb',
         'models/bookshelf.glb',
-        'public/models/bookshelf.glb',
+        '../public/models/bookshelf.glb',
         '/models/bookshelf.glb'
     ];
     

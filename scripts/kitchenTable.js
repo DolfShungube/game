@@ -15,8 +15,8 @@ loadKitchenTable(scene, collidables) {
     const textureLoader = new THREE.TextureLoader();
     
     // Load wood textures
-    const woodDiffuse = textureLoader.load('./src/textures/kitchen_table/textures/Wood_Material_diffuse.jpeg');
-    const woodNormal = textureLoader.load('./src/textures/kitchen_table/textures/Wood_Material_normal.png');
+    const woodDiffuse = textureLoader.load('/textures/kitchen_table/textures/Wood_Material_diffuse.jpeg');
+    const woodNormal = textureLoader.load('/textures/kitchen_table/textures/Wood_Material_normal.png');
     
     [woodDiffuse, woodNormal].forEach(texture => {
         texture.wrapS = THREE.RepeatWrapping;
@@ -37,8 +37,8 @@ loadKitchenTable(scene, collidables) {
         envMapIntensity: 0.5,
     });
     
-    const whiteWoodDiffuse = textureLoader.load('./src/textures/kitchen_table/textures/White_Wood_Material_diffuse.jpeg');
-    const whiteWoodNormal = textureLoader.load('./src/textures/kitchen_table/textures/White_Wood_Material_normal.png');
+    const whiteWoodDiffuse = textureLoader.load('/textures/kitchen_table/textures/White_Wood_Material_diffuse.jpeg');
+    const whiteWoodNormal = textureLoader.load('/textures/kitchen_table/textures/White_Wood_Material_normal.png');
     
     [whiteWoodDiffuse, whiteWoodNormal].forEach(texture => {
         texture.wrapS = THREE.RepeatWrapping;
@@ -60,7 +60,7 @@ loadKitchenTable(scene, collidables) {
     });
     
     loader.load(
-        './src/textures/kitchen_table/scene.gltf',
+        '/textures/kitchen_table/scene.gltf',
         (gltf) => {
             const table = gltf.scene;
             
